@@ -20,10 +20,10 @@ No application code, dependencies, database, or AI integration has been added ye
 
 ## Recommended GitHub Repository Settings
 
-Recommended repository name:
+GitHub repository:
 
 ```text
-FashionDesign-App
+https://github.com/WalterGnr/FashionDesignAIApp
 ```
 
 Recommended visibility:
@@ -44,14 +44,14 @@ Because the GitHub CLI is not installed on this machine, the simplest setup path
 
 1. Go to GitHub.
 2. Create a new empty repository.
-3. Name it `FashionDesign-App`.
+3. Name it `FashionDesignAIApp`.
 4. Set visibility to private unless there is a specific reason to make it public.
 5. Do not initialize it with a README, `.gitignore`, or license because this project already has those local files.
 6. Copy the repository URL.
 7. Add the remote locally:
 
 ```powershell
-git remote add origin https://github.com/YOUR_USERNAME/FashionDesign-App.git
+git remote add origin https://github.com/WalterGnr/FashionDesignAIApp.git
 ```
 
 8. Push the local `main` branch:
