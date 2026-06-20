@@ -1,0 +1,46 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Node / frontend / Electron
+node_modules/
+dist/
+build/
+out/
+.vite/
+.turbo/
+coverage/
+*.tsbuildinfo
+
+# Python / backend
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Database / local runtime
+*.sqlite
+*.sqlite3
+postgres-data/
+redis-data/
+
+# Generated exports and local artifacts
+exports/
+uploads/
+renders/
+tmp/
+temp/
+
+# Logs
+*.log
+logs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
