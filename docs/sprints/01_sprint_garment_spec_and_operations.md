@@ -94,6 +94,7 @@ Keep the first schema useful but not enormous. The MVP should cover dresses well
 Sprint 01 learning notes were added before implementation:
 
 - `docs/sprints/01_sprint_skill_learning_notes.md`
+- `docs/sprints/01_sprint_progress_tracker.md`
 - `docs/domain/dress_domain_vocabulary.md`
 - `docs/domain/design_operation_model_notes.md`
 - `docs/domain/schema_validation_strategy.md`
