@@ -27,7 +27,7 @@ Voice commands, AI interpretation, visual previews, image renders, and tech pack
 
 ## Current Phase
 
-Sprint 00: Project Foundation and Architecture.
+Sprint 01 completed: Garment Spec and Design Operations.
 
 Sprint 00 deliverables:
 
@@ -56,4 +56,4 @@ Before starting a new task, follow [AGENTS.md](AGENTS.md). Read the project cont
 
 ## Not Yet Implemented
 
-This repository does not yet contain the Electron app, FastAPI backend, database schema, or AI integration. Those will begin after Sprint 00 foundation artifacts are accepted.
+This repository does not yet contain the Electron app, FastAPI backend, database schema, or AI integration. Sprint 01 produced domain contracts only, not application code.

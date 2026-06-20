@@ -1,6 +1,6 @@
 # Sprint 01: Garment Spec and Design Operations
 
-Status: Planning only. Skill learning prep completed on 2026-06-20.
+Status: Completed domain contract artifacts on 2026-06-20.
 
 Suggested duration: 1 to 2 weeks.
 
@@ -95,8 +95,17 @@ Sprint 01 learning notes were added before implementation:
 
 - `docs/sprints/01_sprint_skill_learning_notes.md`
 - `docs/sprints/01_sprint_progress_tracker.md`
+- `docs/sprints/01_sprint_completion_record.md`
+- `docs/domain/README.md`
+- `docs/domain/dress_spec_schema.md`
+- `docs/domain/model_profile_schema.md`
+- `docs/domain/design_operations_contract.md`
+- `docs/domain/versioning_and_locked_fields.md`
+- `docs/domain/validation_rules.md`
+- `docs/domain/before_after_spec_examples.md`
+- `docs/domain/sprint_01_test_plan.md`
 - `docs/domain/dress_domain_vocabulary.md`
 - `docs/domain/design_operation_model_notes.md`
 - `docs/domain/schema_validation_strategy.md`
 
-These documents prepare the TypeScript domain modeling, validation, operation model, dress vocabulary, versioning, and testing knowledge needed for Sprint 01. No Sprint 01 implementation has started yet.
+These documents define the Sprint 01 domain contracts. No desktop app, UI, backend, database, AI integration, image generation, dependency installation, or production code was created in Sprint 01.

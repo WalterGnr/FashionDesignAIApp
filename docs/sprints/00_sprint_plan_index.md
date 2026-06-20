@@ -32,6 +32,8 @@ Define the structured dress data model and the operations that can safely modify
 
 File: `01_sprint_garment_spec_and_operations.md`
 
+Current status: domain contract artifacts completed.
+
 ### Sprint 02: AI Command Interpretation Planning
 
 Design how spoken or typed designer commands become validated structured operations.

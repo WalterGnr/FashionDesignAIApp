@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-20
 
-Status: Not started. This tracker is preparation only.
+Status: Completed on 2026-06-20.
 
 ## Sprint 01 Name
 
@@ -40,7 +40,7 @@ The output of Sprint 01 is the internal foundation for the app, not a visible de
 
 ### 1. Context Reload
 
-Status: Not started.
+Status: Completed on 2026-06-20.
 
 Definition of done:
 
@@ -51,7 +51,7 @@ Definition of done:
 
 ### 2. Dress Spec Draft
 
-Status: Not started.
+Status: Completed on 2026-06-20.
 
 Definition of done:
 
@@ -62,7 +62,7 @@ Definition of done:
 
 ### 3. Model Profile Draft
 
-Status: Not started.
+Status: Completed on 2026-06-20.
 
 Definition of done:
 
@@ -73,7 +73,7 @@ Definition of done:
 
 ### 4. Design Operation Draft
 
-Status: Not started.
+Status: Completed on 2026-06-20.
 
 Definition of done:
 
@@ -84,7 +84,7 @@ Definition of done:
 
 ### 5. Locked Field Rules
 
-Status: Not started.
+Status: Completed on 2026-06-20.
 
 Definition of done:
 
@@ -95,7 +95,7 @@ Definition of done:
 
 ### 6. Version Metadata Model
 
-Status: Not started.
+Status: Completed on 2026-06-20.
 
 Definition of done:
 
@@ -106,7 +106,7 @@ Definition of done:
 
 ### 7. Validation Rules
 
-Status: Not started.
+Status: Completed on 2026-06-20.
 
 Definition of done:
 
@@ -117,7 +117,7 @@ Definition of done:
 
 ### 8. Before/After Examples
 
-Status: Not started.
+Status: Completed on 2026-06-20.
 
 Definition of done:
 
@@ -128,7 +128,7 @@ Definition of done:
 
 ### 9. Test Planning Notes
 
-Status: Not started.
+Status: Completed on 2026-06-20.
 
 Definition of done:
 
@@ -139,7 +139,7 @@ Definition of done:
 
 ### 10. Sprint Review
 
-Status: Not started.
+Status: Completed on 2026-06-20.
 
 Definition of done:
 
@@ -166,6 +166,18 @@ Progress will be visible through:
 - New or updated Markdown files under `docs/domain/`.
 - Git commits after meaningful checkpoints.
 - Short summaries after each work pass.
+
+## Completed Sprint 01 Artifacts
+
+- `docs/domain/README.md`
+- `docs/domain/dress_spec_schema.md`
+- `docs/domain/model_profile_schema.md`
+- `docs/domain/design_operations_contract.md`
+- `docs/domain/versioning_and_locked_fields.md`
+- `docs/domain/validation_rules.md`
+- `docs/domain/before_after_spec_examples.md`
+- `docs/domain/sprint_01_test_plan.md`
+- `docs/sprints/01_sprint_completion_record.md`
 
 ## How We Know The Project Is Ready For The Next Sprint
 
