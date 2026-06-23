@@ -1,6 +1,6 @@
 # Local Tool Requirements
 
-Last checked: 2026-06-21
+Last checked: 2026-06-23
 
 Purpose: track what must be installed on the development computer before each implementation phase.
 
@@ -12,14 +12,15 @@ Installed and visible from the terminal:
 - Node.js: installed (`v24.14.0`)
 - npm: installed (`11.9.0`)
 - Visual Studio Code command line: installed
+- Python: installed (`3.13.14`)
+- pip: installed (`26.1.2`)
+- Docker CLI: installed (`29.5.3`)
+- Docker Compose: installed (`v5.1.4`)
 
 Not currently visible from the terminal:
 
-- Python
-- pip
-- Docker
-- Docker Compose
 - GitHub CLI
+- WSL is not enabled yet
 
 ## Required For Sprint 02
 
@@ -54,9 +55,10 @@ Already available:
 
 Required when FastAPI and PostgreSQL implementation begins:
 
-- Python 3.11 or newer
-- pip
-- Docker Desktop, recommended for PostgreSQL and Redis
+- Python 3.11 or newer: installed
+- pip: installed
+- Docker Desktop: installed
+- WSL 2 support: pending Administrator setup
 
 Alternative to Docker:
 
@@ -64,6 +66,29 @@ Alternative to Docker:
 - Native Redis installation, later when background jobs begin
 
 Docker is recommended because it keeps local database setup repeatable and closer to production-style development.
+
+## Manual Windows Step Still Needed
+
+Docker Desktop was installed for the current user, and the Docker CLI and Docker Compose are available from the installed Docker Desktop files.
+
+WSL activation still needs an elevated Administrator prompt. Codex attempted to enable the Windows features, but Windows returned:
+
+```text
+Error: 740
+Elevated permissions are required to run DISM.
+```
+
+Before database containers can run, open PowerShell as Administrator and run:
+
+```powershell
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+wsl --set-default-version 2
+```
+
+Then restart Windows.
+
+After restart, open Docker Desktop once so it can finish WSL setup and ask for any required first-run confirmations.
 
 ## Required For AI Integration
 
@@ -93,8 +118,8 @@ Do not install everything immediately.
 
 Recommended timing:
 
-- Now: no installation needed for the current planning work.
+- Now: Python and Docker Desktop are installed; WSL Administrator activation is still pending.
 - Before desktop implementation: confirm Node and npm compatibility with the Electron/Vite stack.
-- Before backend implementation: install Python and Docker Desktop.
+- Before backend implementation: confirm Python, Docker Desktop, and WSL 2 are all active.
 - Before AI integration: prepare OpenAI API access and environment variables.
 - Before packaging/release: install any signing, installer, or packaging tools required for Windows desktop distribution.
