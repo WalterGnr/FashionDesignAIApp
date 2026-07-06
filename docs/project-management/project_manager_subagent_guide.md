@@ -543,11 +543,12 @@ User decisions needed:
 
 ## Current Known Project State
 
-As of this guide's creation:
+As of the latest project status update:
 
 - Sprint 00 foundation artifacts are complete.
 - Sprint 01 garment spec and design operation contracts are complete.
-- Sprint 02 AI command interpretation planning is the next recommended sprint.
+- Sprint 02 AI command interpretation planning artifacts are complete.
+- Sprint 03 Desktop App Shell Planning is the next recommended sprint.
 - The repository does not yet contain production app code.
 - Electron, React, TypeScript, FastAPI, PostgreSQL, and Docker are planned or prepared, but the application itself has not been scaffolded.
 - MVP scope remains dresses only.
@@ -607,4 +608,3 @@ A successful inspection leaves the user and development agent with:
 - Documentation gaps
 - Specific decisions the user needs to make
 - A durable written report in `docs/project-management/progress_inspection_feedback.md`
-

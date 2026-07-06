@@ -1,6 +1,6 @@
 # AI Fashion Design App
 
-Status: Sprint 01 completed; ready to begin Sprint 02 planning.
+Status: Sprint 02 completed; ready to begin Sprint 03 planning.
 
 ## Product Goal
 
@@ -27,7 +27,7 @@ Voice commands, AI interpretation, visual previews, image renders, and tech pack
 
 ## Current Phase
 
-Sprint 01 completed: Garment Spec and Design Operations.
+Sprint 02 completed: AI Command Interpretation Planning.
 
 Sprint 00 deliverables:
 
@@ -39,6 +39,25 @@ Sprint 00 deliverables:
 - Security rules for AI keys and desktop permissions
 - Development workflow plan
 - Testing strategy outline
+
+Sprint 01 deliverables:
+
+- Dress spec schema
+- Model profile schema
+- Design operation contract
+- Versioning and locked-field rules
+- Validation rules
+- Before/after examples
+- Sprint 01 future test plan
+
+Sprint 02 deliverables:
+
+- AI command interpretation flow
+- Operation tool schema plan
+- Prompting strategy
+- Validation and clarification rules
+- AI evaluation examples
+- Error handling plan
 
 ## Important Documents
 
@@ -56,4 +75,4 @@ Before starting a new task, follow [AGENTS.md](AGENTS.md). Read the project cont
 
 ## Not Yet Implemented
 
-This repository does not yet contain the Electron app, FastAPI backend, database schema, or AI integration. Sprint 01 produced domain contracts only, not application code.
+This repository does not yet contain the Electron app, FastAPI backend, database schema, or live AI integration. Sprint 01 and Sprint 02 produced planning contracts only, not application code.

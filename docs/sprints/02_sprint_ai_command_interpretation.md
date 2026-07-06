@@ -1,6 +1,6 @@
 # Sprint 02: AI Command Interpretation Planning
 
-Status: Planning only.
+Status: Planning artifacts completed.
 
 Suggested duration: 1 to 2 weeks.
 

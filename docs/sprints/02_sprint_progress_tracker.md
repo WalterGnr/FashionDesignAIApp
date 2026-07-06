@@ -4,7 +4,7 @@ Last updated: 2026-07-05
 
 Sprint: AI Command Interpretation Planning
 
-Status: Not started. Ready to begin planning when the user explicitly approves Sprint 02 work.
+Status: Completed planning artifacts.
 
 ## Sprint Goal
 
@@ -35,25 +35,25 @@ Before starting Sprint 02, read:
 
 ## Planned Deliverables
 
-- [ ] AI command interpretation flow
-- [ ] Function/tool schema plan
-- [ ] Prompting strategy
-- [ ] Validation and rejection rules
-- [ ] Clarification strategy
-- [ ] AI evaluation examples
-- [ ] Error handling plan
-- [ ] Sprint 02 completion record
+- [x] AI command interpretation flow
+- [x] Function/tool schema plan
+- [x] Prompting strategy
+- [x] Validation and rejection rules
+- [x] Clarification strategy
+- [x] AI evaluation examples
+- [x] Error handling plan
+- [x] Sprint 02 completion record
 
 ## Acceptance Criteria
 
 Sprint 02 is complete only when:
 
-- [ ] The AI interaction model is clear.
-- [ ] The app has a plan to validate AI output before changing design state.
-- [ ] Ambiguous commands have a planned handling path.
-- [ ] A small evaluation set exists for future testing.
-- [ ] Locked fields, immutable versions, and designer control are preserved in the AI flow.
-- [ ] Non-goals are preserved: no live OpenAI integration, no voice streaming, no UI implementation, no production prompt tuning.
+- [x] The AI interaction model is clear.
+- [x] The app has a plan to validate AI output before changing design state.
+- [x] Ambiguous commands have a planned handling path.
+- [x] A small evaluation set exists for future testing.
+- [x] Locked fields, immutable versions, and designer control are preserved in the AI flow.
+- [x] Non-goals are preserved: no live OpenAI integration, no voice streaming, no UI implementation, no production prompt tuning.
 
 ## Planning Notes
 
@@ -74,3 +74,14 @@ Recommended documentation outputs may include:
 - Sprint plan index updated to show Sprint 02 as next.
 - Sprint 01 domain artifact statuses clarified as completed planning artifacts.
 - Sprint 02 progress tracker created.
+
+## Completed Artifacts
+
+- `docs/ai/README.md`
+- `docs/ai/command_interpretation_flow.md`
+- `docs/ai/operation_tool_schema_plan.md`
+- `docs/ai/prompting_strategy.md`
+- `docs/ai/validation_and_clarification_rules.md`
+- `docs/ai/evaluation_examples.md`
+- `docs/ai/error_handling_plan.md`
+- `docs/sprints/02_sprint_completion_record.md`

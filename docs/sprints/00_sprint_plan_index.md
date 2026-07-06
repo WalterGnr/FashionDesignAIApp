@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-05
 
-Status: Sprint 00 and Sprint 01 are complete. Sprint 02 is the next planning sprint.
+Status: Sprint 00, Sprint 01, and Sprint 02 are complete. Sprint 03 is the next planning sprint.
 
 ## Planning Assumption
 
@@ -40,13 +40,15 @@ Design how spoken or typed designer commands become validated structured operati
 
 File: `02_sprint_ai_command_interpretation.md`
 
-Current status: ready to begin planning.
+Current status: AI planning artifacts completed.
 
 ### Sprint 03: Desktop App Shell Planning
 
 Plan the Electron desktop structure, security boundaries, renderer/main process communication, and packaging direction.
 
 File: `03_sprint_desktop_app_shell.md`
+
+Current status: next recommended planning sprint.
 
 ### Sprint 04: Designer Workflow UI Planning
 
