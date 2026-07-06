@@ -1,6 +1,6 @@
 # AI Fashion Design App
 
-Status: Sprint 00 foundation work started on 2026-06-19.
+Status: Sprint 01 completed; ready to begin Sprint 02 planning.
 
 ## Product Goal
 

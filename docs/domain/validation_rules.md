@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-20
 
-Status: Sprint 01 draft.
+Status: Sprint 01 completed planning artifact.
 
 ## Purpose
 

@@ -1,8 +1,8 @@
 # Sprint Plan Index
 
-Last updated: 2026-06-19
+Last updated: 2026-07-05
 
-Status: Sprint 00 foundation implementation started on 2026-06-19.
+Status: Sprint 00 and Sprint 01 are complete. Sprint 02 is the next planning sprint.
 
 ## Planning Assumption
 
@@ -39,6 +39,8 @@ Current status: domain contract artifacts completed.
 Design how spoken or typed designer commands become validated structured operations.
 
 File: `02_sprint_ai_command_interpretation.md`
+
+Current status: ready to begin planning.
 
 ### Sprint 03: Desktop App Shell Planning
 

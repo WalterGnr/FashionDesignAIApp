@@ -64,7 +64,7 @@ Status scores:
 | Category | Score | Notes |
 | --- | ---: | --- |
 | Product alignment | 3 | Product north star is consistently documented. |
-| Sprint clarity | 2 | Sprint sequence is clear, but the sprint index still says Sprint 00 started even though later docs say Sprint 01 is complete. |
+| Sprint clarity | 2 | At inspection time, the sprint index still said Sprint 00 started even though later docs said Sprint 01 was complete. Resolved in follow-up correction below. |
 | Documentation completeness | 2 | Strong foundation docs exist; PM process docs were missing before this update. |
 | Scope control | 3 | MVP dresses-only scope is documented. |
 | Implementation readiness | 1 | App implementation has not started; Sprint 02 planning is needed before AI implementation. |
@@ -79,17 +79,17 @@ Risks and blockers:
 - Sprint 02 has not yet produced AI command interpretation artifacts.
 - There is not yet a first app shell, UI, backend, database, or AI integration.
 - Docker Desktop may still need first-run setup after Windows restart before containers can be used.
-- The sprint index status line appears stale compared with Sprint 01 completion docs.
-- The root `README.md` opens with "Sprint 00 foundation work started" even though its current phase section says Sprint 01 is completed.
-- Some Sprint 01 domain documents may still use draft-style language even though the completion record marks the sprint complete; a PM should decide whether that wording means "approved planning draft" or "incomplete."
+- The sprint index status line appeared stale compared with Sprint 01 completion docs. Resolved in follow-up correction below.
+- The root `README.md` opened with "Sprint 00 foundation work started" even though its current phase section said Sprint 01 was completed. Resolved in follow-up correction below.
+- Some Sprint 01 domain documents used draft-style status language even though the completion record marks the sprint complete. Resolved in follow-up correction below.
 
 Documentation gaps:
 
-- The sprint index should be updated to say Sprint 01 is complete and Sprint 02 is next.
+- The sprint index should be updated to say Sprint 01 is complete and Sprint 02 is next. Resolved in follow-up correction below.
 - A formal PM inspection cadence does not yet exist outside this new guide.
 - Sprint 02 still needs detailed AI command examples, structured tool schemas, validation/rejection rules, clarification handling, and an evaluation set.
 - `docs/ai/README.md`, `docs/api/README.md`, `docs/database/README.md`, and `docs/product/README.md` are still placeholder-level documents by design.
-- Sprint 02 should probably get a progress tracker before work begins, matching the Sprint 01 pattern.
+- Sprint 02 should probably get a progress tracker before work begins, matching the Sprint 01 pattern. Resolved in follow-up correction below.
 
 Recommended next actions:
 
@@ -110,3 +110,23 @@ User decisions needed:
 
 - Confirm whether Sprint 02 should begin as planning work.
 - Confirm whether the Project Manager subagent should inspect progress after every sprint, before every sprint, or on demand.
+
+## Follow-Up Correction 2026-07-05
+
+Inspector: Codex
+
+Scope:
+
+- Address documentation corrections identified by the initial PM inspection.
+
+Corrections made:
+
+- Updated `README.md` top-level status to show Sprint 01 complete and Sprint 02 planning ready.
+- Updated `docs/sprints/00_sprint_plan_index.md` status and last-updated date.
+- Added Sprint 02 current status as ready to begin planning.
+- Changed Sprint 01 domain artifact statuses from draft language to completed planning artifact language.
+- Added `docs/sprints/02_sprint_progress_tracker.md`.
+
+Remaining decision:
+
+- User should explicitly confirm when to begin Sprint 02 planning.
