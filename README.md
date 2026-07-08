@@ -1,6 +1,6 @@
 # AI Fashion Design App
 
-Status: Sprint 01 and Sprint 02 implementation completed; Sprint 03 planning completed; ready to plan Sprint 04 or implement the next selected sprint.
+Status: Sprint 01, Sprint 02, and Sprint 03 implementation completed; Sprint 04 planning completed.
 
 ## Product Goal
 
@@ -34,6 +34,10 @@ Sprint 02 completed: AI Command Interpretation Planning.
 Sprint 02 implementation completed: provider-free AI command interpretation package.
 
 Sprint 03 completed: Desktop App Shell Planning.
+
+Sprint 03 implementation completed: secure Electron desktop shell.
+
+Sprint 04 completed: Designer Workflow UI Planning.
 
 Sprint 00 deliverables:
 
@@ -79,6 +83,20 @@ Sprint 03 deliverables:
 - Initial preload and IPC contract plan
 - Electron security checklist
 - Desktop development and packaging direction
+- Electron + React + Vite desktop app shell in `apps/desktop`
+- Secure BrowserWindow defaults
+- Typed preload API under `window.fashionDesktop`
+- IPC channels for app info, health ping, and safe external HTTPS links
+- Vitest coverage for IPC contract validation
+
+Sprint 04 deliverables:
+
+- Main workspace layout plan
+- Core component inventory
+- Designer interaction flows
+- UI state model
+- Empty/error/loading state plan
+- Accessibility and keyboard notes
 
 ## Important Documents
 
@@ -93,15 +111,20 @@ Sprint 03 deliverables:
 - [Sprint 02 development completion record](docs/sprints/02_sprint_development_completion_record.md)
 - [Desktop planning docs](docs/desktop/README.md)
 - [Sprint 03 completion record](docs/sprints/03_sprint_completion_record.md)
+- [Sprint 03 development completion record](docs/sprints/03_sprint_development_completion_record.md)
+- [Designer workflow UI planning docs](docs/ui/README.md)
+- [Sprint 04 completion record](docs/sprints/04_sprint_completion_record.md)
 
 ## Implemented Code
 
 - `packages/domain`: shared TypeScript package for the dress-only domain contract.
 - `packages/ai`: provider-free AI command interpretation contracts, deterministic MVP interpreter, and execution boundary.
+- `apps/desktop`: Electron + React + Vite desktop shell with typed preload IPC.
 - Root npm workspace scripts:
   - `npm run typecheck`
   - `npm test`
   - `npm run build`
+  - `npm run dev:desktop`
 
 ## Development Rule
 
@@ -109,4 +132,4 @@ Before starting a new task, follow [AGENTS.md](AGENTS.md). Read the project cont
 
 ## Not Yet Implemented
 
-This repository does not yet contain the Electron app, FastAPI backend, database schema, or live OpenAI integration. Sprint 03 produced planning contracts only; Sprint 01 and Sprint 02 now have executable shared packages.
+This repository now contains the first Electron desktop shell. It does not yet contain the full designer workflow UI, FastAPI backend, database schema, live voice, tech pack export, or live OpenAI integration.

@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Completed planning on 2026-07-08.
+Status: Completed planning and initial implementation on 2026-07-08.
 
 ## Sprint 03 Name
 
@@ -23,6 +23,10 @@ Plan the secure Electron desktop shell that will host the designer workflow with
 - development workflow direction
 - packaging direction
 - readiness criteria for first desktop implementation
+- Electron + React + Vite desktop shell implementation
+- typed preload IPC
+- app info, health ping, and safe external link IPC channels
+- IPC contract tests
 
 ## What Sprint 03 Does Not Include
 
@@ -34,6 +38,15 @@ Plan the secure Electron desktop shell that will host the designer workflow with
 - No backend integration
 - No desktop packaging
 - No UI design implementation
+
+Implementation non-goals preserved:
+
+- No full designer workflow UI
+- No live voice
+- No backend integration
+- No database integration
+- No live OpenAI calls
+- No production installer
 
 ## Progress Checklist
 
@@ -124,6 +137,24 @@ Artifact:
 
 - `docs/sprints/03_sprint_completion_record.md`
 
+### 7. Desktop Shell Implementation
+
+Status: Completed on 2026-07-08.
+
+Artifacts:
+
+- `apps/desktop`
+- `docs/sprints/03_sprint_development_completion_record.md`
+
+Definition of done:
+
+- Electron app shell exists.
+- BrowserWindow security settings are intentional.
+- preload bridge exists.
+- IPC ping works through typed contracts.
+- renderer loads React shell.
+- package builds and tests pass.
+
 ## Sprint 03 Acceptance Criteria
 
 Sprint 03 is complete when:
@@ -146,9 +177,4 @@ Progress is visible through:
 
 ## Next Recommended Step
 
-After this planning sprint, the user can choose one of two paths:
-
-- implement Sprint 02 AI command interpretation planning as code
-- implement Sprint 03 desktop app shell
-
-If the user wants visible app progress quickly, Sprint 03 implementation is the natural next implementation slice. If the user wants AI intelligence first, Sprint 02 implementation should happen before the UI shell becomes rich.
+After this implementation, Sprint 04 implementation is the next natural step because the designer workflow UI is now planned.

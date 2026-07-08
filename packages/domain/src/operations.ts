@@ -1,4 +1,3 @@
-import { randomUUID } from "node:crypto";
 import {
   FIELD_VALUE_SCHEMAS,
   isKnownOperationFieldPath,
@@ -32,7 +31,13 @@ function clone<T>(value: T): T {
 }
 
 function defaultCreateId(prefix: string): string {
-  return `${prefix}-${randomUUID()}`;
+  const cryptoLike = globalThis as typeof globalThis & {
+    crypto?: {
+      randomUUID?: () => string;
+    };
+  };
+  const randomId = cryptoLike.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return `${prefix}-${randomId}`;
 }
 
 function getPath(root: unknown, fieldPath: string): unknown {

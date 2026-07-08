@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 03 planning artifacts.
+Status: Sprint 03 planning artifacts plus initial desktop shell implementation.
 
 ## Purpose
 
@@ -56,3 +56,27 @@ Do not expose raw Node.js APIs to the renderer.
 Do not put OpenAI keys or backend secrets in Electron renderer code.
 
 Do not duplicate dress spec or design operation rules in the desktop app. Reuse `@fashion-design-ai/domain`.
+
+## Implemented Shell
+
+Implemented package:
+
+- `apps/desktop`
+
+Implemented scope:
+
+- Electron main process
+- secure BrowserWindow defaults
+- typed preload bridge exposed as `window.fashionDesktop`
+- IPC handlers for app info, health ping, and HTTPS external links
+- minimal React renderer shell
+- IPC contract tests
+
+Not implemented yet:
+
+- full designer workflow UI
+- live microphone
+- backend persistence
+- live AI calls
+- file export
+- production packaging

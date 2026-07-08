@@ -3,12 +3,17 @@
   "private": true,
   "type": "module",
   "workspaces": [
+    "apps/*",
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace @fashion-design-ai/domain && npm run build --workspace @fashion-design-ai/ai",
-    "test": "npm run test --workspace @fashion-design-ai/domain && npm run test --workspace @fashion-design-ai/ai",
-    "typecheck": "npm run build --workspace @fashion-design-ai/domain && npm run typecheck --workspace @fashion-design-ai/domain && npm run typecheck --workspace @fashion-design-ai/ai"
+    "build": "npm run build --workspace @fashion-design-ai/domain && npm run build --workspace @fashion-design-ai/ai && npm run build --workspace @fashion-design-ai/desktop",
+    "build:desktop": "npm run build --workspace @fashion-design-ai/domain && npm run build --workspace @fashion-design-ai/desktop",
+    "dev:desktop": "npm run dev --workspace @fashion-design-ai/desktop",
+    "test": "npm run test --workspace @fashion-design-ai/domain && npm run test --workspace @fashion-design-ai/ai && npm run test --workspace @fashion-design-ai/desktop",
+    "test:desktop": "npm run test --workspace @fashion-design-ai/desktop",
+    "typecheck": "npm run build --workspace @fashion-design-ai/domain && npm run typecheck --workspace @fashion-design-ai/domain && npm run typecheck --workspace @fashion-design-ai/ai && npm run typecheck --workspace @fashion-design-ai/desktop",
+    "typecheck:desktop": "npm run build --workspace @fashion-design-ai/domain && npm run typecheck --workspace @fashion-design-ai/desktop"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",

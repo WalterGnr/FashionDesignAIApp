@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 00 foundation document with Sprint 01 domain implementation, Sprint 02 AI package implementation, and Sprint 03 desktop planning updates. Most application folders remain planned, but `packages/domain` and `packages/ai` now exist.
+Status: Sprint 00 foundation document with Sprint 01 domain implementation, Sprint 02 AI package implementation, Sprint 03 desktop shell implementation, and Sprint 04 UI planning updates. Most backend/application folders remain planned, but `apps/desktop`, `packages/domain`, and `packages/ai` now exist.
 
 ## Goals
 
@@ -38,6 +38,7 @@ FashionDesign App/
     product/
     security/
     sprints/
+    ui/
   tests/
     e2e/
     fixtures/
@@ -50,15 +51,20 @@ FashionDesign App/
 
 ### `apps/desktop`
 
-Future Electron + React + TypeScript desktop app.
+Implemented Electron + React + TypeScript desktop shell.
 
 Responsibilities:
 
-- Designer UI
-- Preview/canvas surface
-- Microphone controls
-- Transcript display
-- Version timeline
+- Electron main process
+- Secure BrowserWindow setup
+- Preload bridge
+- Typed IPC contracts
+- Minimal React renderer shell
+- Future designer UI
+- Future preview/canvas surface
+- Future microphone controls
+- Future transcript display
+- Future version timeline
 - Secure IPC usage
 
 Should not contain:
@@ -74,6 +80,16 @@ Planning docs:
 - `docs/desktop/preload_ipc_contract_plan.md`
 - `docs/desktop/electron_security_checklist.md`
 - `docs/desktop/desktop_development_and_packaging.md`
+- `docs/ui/README.md`
+
+Current implementation:
+
+- TypeScript package named `@fashion-design-ai/desktop`
+- Electron main process in `apps/desktop/src/main`
+- preload bridge in `apps/desktop/src/preload`
+- IPC contracts in `apps/desktop/src/shared`
+- React renderer in `apps/desktop/src/renderer`
+- Vitest IPC contract tests
 
 ### `services/api`
 
