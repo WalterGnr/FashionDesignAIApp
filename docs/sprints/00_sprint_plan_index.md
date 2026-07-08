@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 00 planning, Sprint 01 implementation, Sprint 02 implementation, Sprint 03 implementation, and Sprint 04 planning are complete. Sprint 04 implementation is the next recommended implementation target.
+Status: Sprint 00 planning, Sprint 01 implementation, Sprint 02 implementation, Sprint 03 implementation, Sprint 04 implementation, and Sprint 05 planning are complete. Sprint 05 implementation is the next recommended implementation target.
 
 ## Planning Assumption
 
@@ -56,13 +56,15 @@ Plan the core interface: canvas-first layout, microphone control, transcript are
 
 File: `04_sprint_designer_workflow_ui.md`
 
-Current status: designer workflow UI planning artifacts completed.
+Current status: designer workflow UI planning artifacts and initial implementation completed.
 
 ### Sprint 05: Voice Interaction Planning
 
 Plan real-time speech-to-text, voice event handling, correction flow, and AI session security.
 
 File: `05_sprint_voice_interaction.md`
+
+Current status: voice interaction planning artifacts completed.
 
 ### Sprint 06: Backend, Database, and Versioning Planning
 

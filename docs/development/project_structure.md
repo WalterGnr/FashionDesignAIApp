@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 00 foundation document with Sprint 01 domain implementation, Sprint 02 AI package implementation, Sprint 03 desktop shell implementation, and Sprint 04 UI planning updates. Most backend/application folders remain planned, but `apps/desktop`, `packages/domain`, and `packages/ai` now exist.
+Status: Sprint 00 foundation document with Sprint 01 domain implementation, Sprint 02 AI package implementation, Sprint 03 desktop shell implementation, Sprint 04 UI implementation, and Sprint 05 voice planning updates. Most backend/application folders remain planned, but `apps/desktop`, `packages/domain`, and `packages/ai` now exist.
 
 ## Goals
 
@@ -39,6 +39,7 @@ FashionDesign App/
     security/
     sprints/
     ui/
+    voice/
   tests/
     e2e/
     fixtures/
@@ -51,7 +52,7 @@ FashionDesign App/
 
 ### `apps/desktop`
 
-Implemented Electron + React + TypeScript desktop shell.
+Implemented Electron + React + TypeScript desktop shell and first designer workflow UI.
 
 Responsibilities:
 
@@ -59,12 +60,15 @@ Responsibilities:
 - Secure BrowserWindow setup
 - Preload bridge
 - Typed IPC contracts
-- Minimal React renderer shell
-- Future designer UI
-- Future preview/canvas surface
+- Designer workflow React renderer
+- Typed command bar
+- Structured preview surface
+- AI change review
+- Spec inspector
+- Version timeline
+- Locked fields panel
 - Future microphone controls
 - Future transcript display
-- Future version timeline
 - Secure IPC usage
 
 Should not contain:
@@ -89,7 +93,8 @@ Current implementation:
 - preload bridge in `apps/desktop/src/preload`
 - IPC contracts in `apps/desktop/src/shared`
 - React renderer in `apps/desktop/src/renderer`
-- Vitest IPC contract tests
+- Designer session service in `apps/desktop/src/renderer/src/designer-session.ts`
+- Vitest IPC contract and designer session tests
 
 ### `services/api`
 

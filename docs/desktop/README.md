@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 03 planning artifacts plus initial desktop shell implementation.
+Status: Sprint 03 planning artifacts plus Sprint 03 shell implementation and Sprint 04 designer workflow UI implementation.
 
 ## Purpose
 
@@ -70,11 +70,12 @@ Implemented scope:
 - typed preload bridge exposed as `window.fashionDesktop`
 - IPC handlers for app info, health ping, and HTTPS external links
 - minimal React renderer shell
+- first designer workflow UI
+- typed command flow through `@fashion-design-ai/ai` and `@fashion-design-ai/domain`
 - IPC contract tests
 
 Not implemented yet:
 
-- full designer workflow UI
 - live microphone
 - backend persistence
 - live AI calls

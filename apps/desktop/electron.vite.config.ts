@@ -29,6 +29,7 @@ export default defineConfig({
       alias: {
         "@renderer": resolve(root, "src/renderer/src"),
         "@shared": resolve(root, "src/shared"),
+        "@fashion-design-ai/ai": resolve(root, "../../packages/ai/src/index.ts"),
         "@fashion-design-ai/domain": resolve(root, "../../packages/domain/src/index.ts")
       }
     }

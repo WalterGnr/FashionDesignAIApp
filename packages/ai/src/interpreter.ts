@@ -1,4 +1,3 @@
-import { randomUUID } from "node:crypto";
 import {
   findLockedFieldConflict,
   type DesignOperation,
@@ -33,7 +32,13 @@ type InterpreterRuntime = {
 };
 
 function defaultCreateId(prefix: string): string {
-  return `${prefix}-${randomUUID()}`;
+  const cryptoLike = globalThis as typeof globalThis & {
+    crypto?: {
+      randomUUID?: () => string;
+    };
+  };
+  const randomId = cryptoLike.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return `${prefix}-${randomId}`;
 }
 
 function runtimeFor(input: InterpretDesignerCommandInput): InterpreterRuntime {

@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 04 planning artifacts.
+Status: Sprint 04 planning artifacts plus initial implementation.
 
 ## Purpose
 
@@ -26,6 +26,23 @@ The side panels explain state, changes, locks, and versions.
 - `ui_state_model.md`
 - `empty_error_loading_states.md`
 - `accessibility_and_keyboard.md`
+
+## Implemented UI Slice
+
+Implemented in:
+
+- `apps/desktop/src/renderer/src/main.tsx`
+- `apps/desktop/src/renderer/src/styles.css`
+- `apps/desktop/src/renderer/src/designer-session.ts`
+
+Current capabilities:
+
+- typed command bar
+- AI change review
+- spec inspector
+- selectable version timeline
+- locked fields panel
+- structured preview driven by the selected dress spec
 
 ## Implementation Reminder
 

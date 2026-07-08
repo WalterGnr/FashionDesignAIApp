@@ -12,6 +12,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@fashion-design-ai/ai": "0.1.0",
     "@fashion-design-ai/domain": "0.1.0",
     "lucide-react": "^0.475.0",
     "react": "^19.0.0",

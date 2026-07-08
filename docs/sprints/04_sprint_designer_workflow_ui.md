@@ -1,6 +1,6 @@
 # Sprint 04: Designer Workflow UI Planning
 
-Status: Planning completed on 2026-07-08.
+Status: Planning and initial implementation completed on 2026-07-08.
 
 Suggested duration: 1 to 2 weeks.
 
@@ -8,7 +8,7 @@ Suggested duration: 1 to 2 weeks.
 
 Plan the first usable designer interface around a fast, minimal, canvas-first workflow.
 
-Sprint 04 does not implement the UI yet. It defines the designer-facing layout, core components, interaction flows, UI state model, and acceptance criteria so the future implementation can move decisively.
+Sprint 04 first defined the designer-facing layout, core components, interaction flows, UI state model, and acceptance criteria. It now also includes the first implemented designer workspace in the Electron renderer.
 
 ## Why This Sprint Matters
 
@@ -27,6 +27,9 @@ The design canvas stays central. Panels and controls support the creative flow w
 - Accessibility and keyboard interaction notes
 - Sprint 04 progress tracker
 - Sprint 04 completion record
+- First designer workspace UI implementation
+- Designer session command service
+- Desktop tests for typed command workflow
 
 ## Planning Artifacts
 
@@ -39,6 +42,9 @@ The design canvas stays central. Panels and controls support the creative flow w
 - `docs/ui/accessibility_and_keyboard.md`
 - `docs/sprints/04_sprint_progress_tracker.md`
 - `docs/sprints/04_sprint_completion_record.md`
+- `docs/sprints/04_sprint_development_completion_record.md`
+- `apps/desktop/src/renderer/src/main.tsx`
+- `apps/desktop/src/renderer/src/designer-session.ts`
 
 ## Main Workspace Direction
 
@@ -206,8 +212,6 @@ Do not store ad hoc prompt strings as the design source of truth.
 
 ## Non-Goals
 
-- No UI implementation in this planning sprint.
-- No styling code.
 - No 3D rendering implementation.
 - No live voice.
 - No backend persistence.
