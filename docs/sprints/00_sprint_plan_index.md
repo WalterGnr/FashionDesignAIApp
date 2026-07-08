@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 00 planning, Sprint 01 planning and implementation, and Sprint 02 planning are complete. Sprint 03 is the next planning sprint unless the user chooses to implement Sprint 02 first.
+Status: Sprint 00 planning, Sprint 01 planning and implementation, Sprint 02 planning, and Sprint 03 planning are complete. Sprint 04 is the next planning sprint unless the user chooses to implement an earlier planned sprint first.
 
 ## Planning Assumption
 
@@ -48,13 +48,15 @@ Plan the Electron desktop structure, security boundaries, renderer/main process 
 
 File: `03_sprint_desktop_app_shell.md`
 
-Current status: next recommended planning sprint.
+Current status: desktop app shell planning artifacts completed.
 
 ### Sprint 04: Designer Workflow UI Planning
 
 Plan the core interface: canvas-first layout, microphone control, transcript area, spec inspector, and version timeline.
 
 File: `04_sprint_designer_workflow_ui.md`
+
+Current status: next recommended planning sprint.
 
 ### Sprint 05: Voice Interaction Planning
 

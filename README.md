@@ -1,6 +1,6 @@
 # AI Fashion Design App
 
-Status: Sprint 01 domain implementation completed; Sprint 02 planning completed; ready to plan or implement the next selected sprint.
+Status: Sprint 01 domain implementation completed; Sprint 02 and Sprint 03 planning completed; ready to plan Sprint 04 or implement the next selected sprint.
 
 ## Product Goal
 
@@ -30,6 +30,8 @@ Voice commands, AI interpretation, visual previews, image renders, and tech pack
 Sprint 01 implementation completed: shared domain package.
 
 Sprint 02 completed: AI Command Interpretation Planning.
+
+Sprint 03 completed: Desktop App Shell Planning.
 
 Sprint 00 deliverables:
 
@@ -64,6 +66,14 @@ Sprint 02 deliverables:
 - AI evaluation examples
 - Error handling plan
 
+Sprint 03 deliverables:
+
+- Electron process model plan
+- Main/preload/renderer responsibility boundaries
+- Initial preload and IPC contract plan
+- Electron security checklist
+- Desktop development and packaging direction
+
 ## Important Documents
 
 - [Project planning prompt](ai_fashion_design_app_planning_prompt.md)
@@ -74,6 +84,8 @@ Sprint 02 deliverables:
 - [Senior development operating guide](docs/02_senior_development_operating_guide.md)
 - [Sprint plan index](docs/sprints/00_sprint_plan_index.md)
 - [Sprint 01 development completion record](docs/sprints/01_sprint_development_completion_record.md)
+- [Desktop planning docs](docs/desktop/README.md)
+- [Sprint 03 completion record](docs/sprints/03_sprint_completion_record.md)
 
 ## Implemented Code
 
@@ -89,4 +101,4 @@ Before starting a new task, follow [AGENTS.md](AGENTS.md). Read the project cont
 
 ## Not Yet Implemented
 
-This repository does not yet contain the Electron app, FastAPI backend, database schema, or live AI integration. Sprint 02 produced planning contracts only; Sprint 01 now has the first executable shared domain package.
+This repository does not yet contain the Electron app, FastAPI backend, database schema, or live AI integration. Sprint 02 and Sprint 03 produced planning contracts only; Sprint 01 now has the first executable shared domain package.

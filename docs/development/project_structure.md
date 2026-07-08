@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 00 foundation document with Sprint 01 domain implementation update. Most application folders remain planned, but `packages/domain` now exists.
+Status: Sprint 00 foundation document with Sprint 01 domain implementation and Sprint 03 desktop planning updates. Most application folders remain planned, but `packages/domain` now exists.
 
 ## Goals
 
@@ -65,6 +65,14 @@ Should not contain:
 - OpenAI API keys
 - Direct database access
 - Backend secrets
+
+Planning docs:
+
+- `docs/desktop/README.md`
+- `docs/desktop/electron_process_model.md`
+- `docs/desktop/preload_ipc_contract_plan.md`
+- `docs/desktop/electron_security_checklist.md`
+- `docs/desktop/desktop_development_and_packaging.md`
 
 ### `services/api`
 
