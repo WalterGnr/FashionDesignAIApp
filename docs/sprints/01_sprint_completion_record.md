@@ -137,13 +137,15 @@ Before starting Sprint 02, read:
 
 ## Notes For Future Implementation
 
-When implementation begins, the first code should likely live in `packages/domain`.
+Implementation began on 2026-07-08 after the user explicitly started Sprint 01 development.
 
-The first implementation should convert these contracts into:
+The first code lives in `packages/domain`.
+
+The first implementation converted these contracts into:
 
 - TypeScript types
 - Zod validation schemas
 - operation application functions
 - unit tests with fixtures
 
-That implementation should happen only after the appropriate sprint explicitly starts.
+See `docs/sprints/01_sprint_development_completion_record.md` for the development completion record.

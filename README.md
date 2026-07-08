@@ -1,6 +1,6 @@
 # AI Fashion Design App
 
-Status: Sprint 02 completed; ready to begin Sprint 03 planning.
+Status: Sprint 01 domain implementation completed; Sprint 02 planning completed; ready to plan or implement the next selected sprint.
 
 ## Product Goal
 
@@ -27,6 +27,8 @@ Voice commands, AI interpretation, visual previews, image renders, and tech pack
 
 ## Current Phase
 
+Sprint 01 implementation completed: shared domain package.
+
 Sprint 02 completed: AI Command Interpretation Planning.
 
 Sprint 00 deliverables:
@@ -49,6 +51,9 @@ Sprint 01 deliverables:
 - Validation rules
 - Before/after examples
 - Sprint 01 future test plan
+- TypeScript/Zod domain package in `packages/domain`
+- Operation application functions for accepted, rejected, clarification, no-op, variation, and revert outcomes
+- Vitest coverage for the initial domain contract
 
 Sprint 02 deliverables:
 
@@ -68,6 +73,15 @@ Sprint 02 deliverables:
 - [Learning roadmap](docs/01_learning_roadmap.md)
 - [Senior development operating guide](docs/02_senior_development_operating_guide.md)
 - [Sprint plan index](docs/sprints/00_sprint_plan_index.md)
+- [Sprint 01 development completion record](docs/sprints/01_sprint_development_completion_record.md)
+
+## Implemented Code
+
+- `packages/domain`: shared TypeScript package for the dress-only domain contract.
+- Root npm workspace scripts:
+  - `npm run typecheck`
+  - `npm test`
+  - `npm run build`
 
 ## Development Rule
 
@@ -75,4 +89,4 @@ Before starting a new task, follow [AGENTS.md](AGENTS.md). Read the project cont
 
 ## Not Yet Implemented
 
-This repository does not yet contain the Electron app, FastAPI backend, database schema, or live AI integration. Sprint 01 and Sprint 02 produced planning contracts only, not application code.
+This repository does not yet contain the Electron app, FastAPI backend, database schema, or live AI integration. Sprint 02 produced planning contracts only; Sprint 01 now has the first executable shared domain package.

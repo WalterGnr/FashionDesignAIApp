@@ -1,8 +1,8 @@
 # Project Structure Plan
 
-Last updated: 2026-06-19
+Last updated: 2026-07-08
 
-Status: Sprint 00 foundation document. This is the planned structure, not fully implemented yet.
+Status: Sprint 00 foundation document with Sprint 01 domain implementation update. Most application folders remain planned, but `packages/domain` now exists.
 
 ## Goals
 
@@ -91,7 +91,7 @@ Responsibilities:
 
 ### `packages/domain`
 
-Future shared domain package.
+Implemented shared domain package.
 
 Responsibilities:
 
@@ -101,7 +101,12 @@ Responsibilities:
 - Versioning logic
 - Measurement utilities
 
-This package should be created early because the structured garment spec is the product's source of truth.
+Current implementation:
+
+- TypeScript package named `@fashion-design-ai/domain`
+- Zod schemas for dress specs, model profiles, design operations, locked fields, design versions, and validation results
+- Operation application helpers for set field, add/remove detail, modify measurement, lock/unlock field, create variation, and revert to version
+- Vitest unit tests for the first domain contract
 
 ### `packages/contracts`
 

@@ -1,8 +1,8 @@
 # Sprint Plan Index
 
-Last updated: 2026-07-05
+Last updated: 2026-07-08
 
-Status: Sprint 00, Sprint 01, and Sprint 02 are complete. Sprint 03 is the next planning sprint.
+Status: Sprint 00 planning, Sprint 01 planning and implementation, and Sprint 02 planning are complete. Sprint 03 is the next planning sprint unless the user chooses to implement Sprint 02 first.
 
 ## Planning Assumption
 
@@ -32,7 +32,7 @@ Define the structured dress data model and the operations that can safely modify
 
 File: `01_sprint_garment_spec_and_operations.md`
 
-Current status: domain contract artifacts completed.
+Current status: domain contract artifacts completed; initial TypeScript/Zod domain package implemented in `packages/domain`.
 
 ### Sprint 02: AI Command Interpretation Planning
 

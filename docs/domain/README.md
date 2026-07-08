@@ -1,6 +1,6 @@
 # Domain Documentation
 
-Last updated: 2026-06-20
+Last updated: 2026-07-08
 
 ## Purpose
 
@@ -40,16 +40,24 @@ ChangeSummary
 
 ## Boundary
 
-These documents are contracts and planning artifacts.
+These documents remain the source contracts and planning artifacts.
 
-They do not implement:
+The first executable implementation now lives in:
 
-- TypeScript code
-- Zod schemas
+- `packages/domain`
+
+That package currently implements:
+
+- TypeScript domain types
+- Zod validation schemas
+- operation application functions
+- test fixtures
+- Vitest coverage
+
+Still not implemented here:
+
 - database tables
 - UI
 - AI calls
 - image generation
 - voice interaction
-
-Implementation should begin only in a later sprint that explicitly allows code.
