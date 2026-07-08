@@ -6,9 +6,9 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace @fashion-design-ai/domain",
-    "test": "npm run test --workspace @fashion-design-ai/domain",
-    "typecheck": "npm run typecheck --workspace @fashion-design-ai/domain"
+    "build": "npm run build --workspace @fashion-design-ai/domain && npm run build --workspace @fashion-design-ai/ai",
+    "test": "npm run test --workspace @fashion-design-ai/domain && npm run test --workspace @fashion-design-ai/ai",
+    "typecheck": "npm run build --workspace @fashion-design-ai/domain && npm run typecheck --workspace @fashion-design-ai/domain && npm run typecheck --workspace @fashion-design-ai/ai"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",

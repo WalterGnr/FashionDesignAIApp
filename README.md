@@ -1,6 +1,6 @@
 # AI Fashion Design App
 
-Status: Sprint 01 domain implementation completed; Sprint 02 and Sprint 03 planning completed; ready to plan Sprint 04 or implement the next selected sprint.
+Status: Sprint 01 and Sprint 02 implementation completed; Sprint 03 planning completed; ready to plan Sprint 04 or implement the next selected sprint.
 
 ## Product Goal
 
@@ -30,6 +30,8 @@ Voice commands, AI interpretation, visual previews, image renders, and tech pack
 Sprint 01 implementation completed: shared domain package.
 
 Sprint 02 completed: AI Command Interpretation Planning.
+
+Sprint 02 implementation completed: provider-free AI command interpretation package.
 
 Sprint 03 completed: Desktop App Shell Planning.
 
@@ -65,6 +67,10 @@ Sprint 02 deliverables:
 - Validation and clarification rules
 - AI evaluation examples
 - Error handling plan
+- TypeScript/Zod AI command interpretation result schemas in `packages/ai`
+- Provider-free MVP command interpreter for Sprint 02 evaluation examples
+- Execution layer that validates/applies AI-proposed operations through `@fashion-design-ai/domain`
+- Vitest coverage for AI output validation and command interpretation examples
 
 Sprint 03 deliverables:
 
@@ -84,12 +90,14 @@ Sprint 03 deliverables:
 - [Senior development operating guide](docs/02_senior_development_operating_guide.md)
 - [Sprint plan index](docs/sprints/00_sprint_plan_index.md)
 - [Sprint 01 development completion record](docs/sprints/01_sprint_development_completion_record.md)
+- [Sprint 02 development completion record](docs/sprints/02_sprint_development_completion_record.md)
 - [Desktop planning docs](docs/desktop/README.md)
 - [Sprint 03 completion record](docs/sprints/03_sprint_completion_record.md)
 
 ## Implemented Code
 
 - `packages/domain`: shared TypeScript package for the dress-only domain contract.
+- `packages/ai`: provider-free AI command interpretation contracts, deterministic MVP interpreter, and execution boundary.
 - Root npm workspace scripts:
   - `npm run typecheck`
   - `npm test`
@@ -101,4 +109,4 @@ Before starting a new task, follow [AGENTS.md](AGENTS.md). Read the project cont
 
 ## Not Yet Implemented
 
-This repository does not yet contain the Electron app, FastAPI backend, database schema, or live AI integration. Sprint 02 and Sprint 03 produced planning contracts only; Sprint 01 now has the first executable shared domain package.
+This repository does not yet contain the Electron app, FastAPI backend, database schema, or live OpenAI integration. Sprint 03 produced planning contracts only; Sprint 01 and Sprint 02 now have executable shared packages.

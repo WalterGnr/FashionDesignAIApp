@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 00 planning, Sprint 01 planning and implementation, Sprint 02 planning, and Sprint 03 planning are complete. Sprint 04 is the next planning sprint unless the user chooses to implement an earlier planned sprint first.
+Status: Sprint 00 planning, Sprint 01 implementation, Sprint 02 implementation, and Sprint 03 planning are complete. Sprint 04 is the next planning sprint unless the user chooses to implement Sprint 03 first.
 
 ## Planning Assumption
 
@@ -40,7 +40,7 @@ Design how spoken or typed designer commands become validated structured operati
 
 File: `02_sprint_ai_command_interpretation.md`
 
-Current status: AI planning artifacts completed.
+Current status: AI planning artifacts completed; initial provider-free TypeScript AI command interpretation package implemented in `packages/ai`.
 
 ### Sprint 03: Desktop App Shell Planning
 

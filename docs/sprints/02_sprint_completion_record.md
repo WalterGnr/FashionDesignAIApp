@@ -129,7 +129,22 @@ Before starting Sprint 03, read:
 
 ## Notes For Future Implementation
 
-When implementation begins, the AI command interpreter should likely become a backend service boundary that:
+Implementation began on 2026-07-08 after the user explicitly started Sprint 02 implementation.
+
+The first code lives in `packages/ai`.
+
+The first implementation converts the planning artifacts into:
+
+- TypeScript result types
+- Zod result schemas
+- command normalization/context helpers
+- a provider-free deterministic interpreter for MVP evaluation examples
+- execution helpers that validate/apply AI-proposed operations through `@fashion-design-ai/domain`
+- unit tests based on Sprint 02 evaluation examples
+
+See `docs/sprints/02_sprint_development_completion_record.md` for the development completion record.
+
+Future live integration should turn the AI command interpreter into a backend service boundary that:
 
 - accepts raw command text and design context
 - calls OpenAI using backend-owned credentials
@@ -137,10 +152,8 @@ When implementation begins, the AI command interpreter should likely become a ba
 - validates proposals with shared domain schemas
 - returns accepted/rejected/clarification results to the desktop app
 
-The first code should still probably start with the domain package before live AI calls:
+The provider-free implementation should remain useful before live AI calls:
 
-- TypeScript types
-- Zod schemas
-- operation fixtures
-- validation tests
-- evaluation examples converted into test fixtures
+- provider adapters can return the same `AICommandInterpretationResult`
+- malformed provider output is rejected by the same schemas
+- domain validation still owns final operation acceptance

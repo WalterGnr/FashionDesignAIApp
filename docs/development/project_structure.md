@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 00 foundation document with Sprint 01 domain implementation and Sprint 03 desktop planning updates. Most application folders remain planned, but `packages/domain` now exists.
+Status: Sprint 00 foundation document with Sprint 01 domain implementation, Sprint 02 AI package implementation, and Sprint 03 desktop planning updates. Most application folders remain planned, but `packages/domain` and `packages/ai` now exist.
 
 ## Goals
 
@@ -27,6 +27,7 @@ FashionDesign App/
     workers/
   packages/
     domain/
+    ai/
     contracts/
   docs/
     ai/
@@ -115,6 +116,26 @@ Current implementation:
 - Zod schemas for dress specs, model profiles, design operations, locked fields, design versions, and validation results
 - Operation application helpers for set field, add/remove detail, modify measurement, lock/unlock field, create variation, and revert to version
 - Vitest unit tests for the first domain contract
+
+### `packages/ai`
+
+Implemented shared AI command interpretation package.
+
+Responsibilities:
+
+- AI command interpretation result schemas
+- command normalization and context assembly helpers
+- provider-free MVP command interpreter
+- execution boundary that validates/applies AI-proposed operations through `@fashion-design-ai/domain`
+- evaluation-style tests for Sprint 02 examples
+
+Current implementation:
+
+- TypeScript package named `@fashion-design-ai/ai`
+- Zod schemas for operation batch, clarification, rejection, and no-op AI result shapes
+- deterministic interpreter for the first Sprint 02 command examples
+- command execution helper that rejects malformed AI output before domain mutation
+- no live OpenAI calls
 
 ### `packages/contracts`
 
