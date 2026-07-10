@@ -16,7 +16,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { createInitialDesignVersion } from "@fashion-design-ai/domain";
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { AppInfo, DesktopResponse, HealthPingResult } from "../../shared/ipc-contracts.js";
 import {
   applyDesignerTextCommand,
@@ -26,6 +26,8 @@ import {
   type DesignerCommandResult
 } from "./designer-session.js";
 import { nextMockTranscript, VoiceSessionController, type VoiceSessionSnapshot } from "./voice-session.js";
+import { DressPreviewCanvas } from "./preview/DressPreviewCanvas.js";
+import { mapDressSpecToPreview } from "./preview/preview-mapper.js";
 import "./styles.css";
 
 type ShellStatus = "checking" | "ready" | "error";
@@ -33,19 +35,6 @@ type ShellStatus = "checking" | "ready" | "error";
 type LatestCommand = {
   rawInput: string;
   result: DesignerCommandResult;
-};
-
-const COLOR_MAP: Record<string, string> = {
-  red: "#9d2335",
-  black: "#242426",
-  white: "#f8f3ea",
-  ivory: "#f4ecd9",
-  blue: "#355c8a",
-  green: "#397363",
-  pink: "#d57a90",
-  purple: "#715089",
-  gold: "#bd8a3d",
-  silver: "#8a9098"
 };
 
 function responseLabel<T>(response: DesktopResponse<T> | null): string {
@@ -66,13 +55,6 @@ function valueText(value: unknown): string {
 
 function confidenceText(confidence: number): string {
   return `${Math.round(confidence * 100)}%`;
-}
-
-function previewStyle(primaryColor: string | null): CSSProperties {
-  const color = primaryColor ? COLOR_MAP[primaryColor] ?? primaryColor : "#8f2f3c";
-  return {
-    "--dress-color": color
-  } as CSSProperties;
 }
 
 function statusIcon(status: CommandStatus) {
@@ -109,14 +91,14 @@ function App() {
   const selectedVersion = versionHistory.find((version) => version.version_id === selectedVersionId) ?? currentVersion;
   const selectedSpec = selectedVersion.spec_snapshot;
   const fieldRows = useMemo(() => fieldRowsFromSpec(selectedSpec, selectedVersion.locked_fields), [selectedSpec, selectedVersion.locked_fields]);
-  const primaryColor = selectedSpec.color.primary_color.name.value;
-  const silhouette = selectedSpec.silhouette.value ?? "unknown";
-  const skirtShape = selectedSpec.skirt.shape.value ?? "unknown";
-  const neckline = selectedSpec.neckline.type.value ?? "unknown";
-  const sleeveType = selectedSpec.sleeves.type.value ?? "unknown";
+  const previewParameters = useMemo(() => mapDressSpecToPreview(selectedSpec), [selectedSpec]);
   const isViewingCurrent = selectedVersion.version_id === currentVersion.version_id;
 
   async function refreshHealth() {
+    if (!window.fashionDesktop) {
+      setShellStatus("ready");
+      return;
+    }
     const ping = await window.fashionDesktop.health.ping({ request_id: "designer-workspace" });
     setHealth(ping);
     setShellStatus(ping.ok ? "ready" : "error");
@@ -126,6 +108,10 @@ function App() {
     let active = true;
 
     async function loadDesktopState() {
+      if (!window.fashionDesktop) {
+        setShellStatus("ready");
+        return;
+      }
       const [info, ping] = await Promise.all([window.fashionDesktop.app.getInfo(), window.fashionDesktop.health.ping({ request_id: "startup" })]);
       if (!active) {
         return;
@@ -157,6 +143,10 @@ function App() {
   }, []);
 
   async function openProjectDocs() {
+    if (!window.fashionDesktop) {
+      window.open("https://github.com/WalterGnr/FashionDesignAIApp", "_blank", "noopener,noreferrer");
+      return;
+    }
     await window.fashionDesktop.shell.openExternal({
       url: "https://github.com/WalterGnr/FashionDesignAIApp"
     });
@@ -304,24 +294,13 @@ function App() {
               <span>{valueText(selectedSpec.identity.dress_type.value)}</span>
             </div>
 
-            <div
-              className={`dress-preview silhouette-${silhouette} skirt-${skirtShape} neckline-${neckline} sleeve-${sleeveType}`}
-              style={previewStyle(primaryColor)}
-              aria-hidden="true"
-            >
-              <span className="dress-sleeve left" />
-              <span className="dress-sleeve right" />
-              <span className="dress-neckline" />
-              <span className="dress-bodice" />
-              <span className="dress-waist" />
-              <span className="dress-skirt" />
-            </div>
+            <DressPreviewCanvas parameters={previewParameters} versionId={selectedVersion.version_id} />
 
             <div className="preview-spec-strip" aria-label="Visible spec summary">
-              <span>{valueText(primaryColor)} color</span>
-              <span>{valueText(selectedSpec.fabric.primary.name.value)} fabric</span>
-              <span>{valueText(neckline)} neckline</span>
-              <span>{valueText(skirtShape)} skirt</span>
+              <span>{previewParameters.labels.color}</span>
+              <span>{previewParameters.labels.fabric}</span>
+              <span>{previewParameters.labels.neckline}</span>
+              <span>{previewParameters.labels.skirt}</span>
             </div>
           </div>
 

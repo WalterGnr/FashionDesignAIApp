@@ -13,7 +13,7 @@
 
 body {
   margin: 0;
-  min-width: 1024px;
+  min-width: 960px;
   min-height: 720px;
 }
 
@@ -241,123 +241,152 @@ h1 {
   padding: 5px 10px;
 }
 
-.dress-preview {
-  --dress-color: #8f2f3c;
-  align-self: center;
+.dress-preview-canvas-shell {
+  align-self: stretch;
+  background: #eef1ee;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.dress-preview-canvas,
+.dress-preview-canvas > div,
+.dress-preview-canvas canvas {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.preview-mode-badge,
+.preview-assumption {
+  align-items: center;
+  backdrop-filter: blur(8px);
+  background: rgba(251, 252, 251, 0.86);
+  border: 1px solid rgba(188, 199, 193, 0.9);
+  border-radius: 999px;
+  color: #45514c;
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 760;
+  height: 28px;
+  padding: 0 10px;
+  position: absolute;
+  text-transform: uppercase;
+  top: 12px;
+  z-index: 4;
+}
+
+.preview-mode-badge {
+  gap: 7px;
+  left: 12px;
+}
+
+.preview-live-dot {
+  background: #2f7568;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(47, 117, 104, 0.12);
+  height: 7px;
+  width: 7px;
+}
+
+.preview-assumption {
+  bottom: 12px;
+  color: #6c5414;
+  top: auto;
+  left: 12px;
+  text-transform: none;
+}
+
+.preview-view-controls {
+  backdrop-filter: blur(8px);
+  background: rgba(251, 252, 251, 0.88);
+  border: 1px solid rgba(188, 199, 193, 0.92);
+  border-radius: 6px;
   display: grid;
-  filter: drop-shadow(0 22px 28px rgba(31, 35, 37, 0.16));
-  grid-template-columns: 74px 150px 74px;
-  grid-template-rows: 34px 132px 12px 276px;
+  gap: 2px;
+  grid-template-columns: repeat(4, 42px) 32px;
+  padding: 3px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 4;
+}
+
+.preview-view-controls button {
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  height: 28px;
+  padding: 0 6px;
+}
+
+.preview-view-controls button.selected {
+  background: #1f5b55;
+  color: #ffffff;
+}
+
+.preview-view-controls .reset-view {
+  padding: 0;
+  width: 32px;
+}
+
+.preview-fallback {
+  align-items: center;
+  background: #eef1ee;
+  color: #68716c;
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  gap: 14px;
+  height: 100%;
+  justify-content: center;
+  min-height: 430px;
+  width: 100%;
+}
+
+.fallback-figure {
+  --fallback-dress-color: #8f2f3c;
+  display: grid;
+  filter: drop-shadow(0 18px 22px rgba(31, 35, 37, 0.18));
+  grid-template-rows: 48px 126px 220px;
   justify-items: center;
-  min-height: 454px;
-  width: 298px;
+  width: 250px;
 }
 
-.dress-neckline {
-  background: color-mix(in srgb, var(--dress-color) 70%, #ffffff 30%);
-  clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%);
-  grid-column: 2;
-  grid-row: 1;
-  height: 34px;
-  width: 116px;
-  z-index: 3;
+.fallback-head {
+  background: #cfc5ba;
+  border-radius: 50%;
+  height: 44px;
+  width: 38px;
 }
 
-.dress-bodice {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--dress-color) 92%, #ffffff 8%), color-mix(in srgb, var(--dress-color) 84%, #111111 16%));
-  clip-path: polygon(14% 0, 86% 0, 72% 100%, 28% 100%);
-  grid-column: 2;
-  grid-row: 2;
-  height: 132px;
-  width: 132px;
-  z-index: 2;
+.fallback-bodice {
+  background: var(--fallback-dress-color);
+  clip-path: polygon(12% 0, 88% 0, 70% 100%, 30% 100%);
+  height: 126px;
+  width: 112px;
 }
 
-.dress-waist {
-  background: color-mix(in srgb, var(--dress-color) 76%, #111111 24%);
-  border-radius: 3px;
-  grid-column: 2;
-  grid-row: 3;
-  height: 12px;
-  width: 90px;
-  z-index: 2;
+.fallback-skirt {
+  background: var(--fallback-dress-color);
+  clip-path: polygon(34% 0, 66% 0, 100% 100%, 0 100%);
+  height: 220px;
+  width: 230px;
 }
 
-.dress-skirt {
-  background: linear-gradient(180deg, var(--dress-color), color-mix(in srgb, var(--dress-color) 58%, #e6c2ad 42%));
-  clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
-  grid-column: 1 / 4;
-  grid-row: 4;
-  height: 276px;
-  width: 278px;
-  z-index: 1;
+.fallback-skirt.column {
+  clip-path: polygon(38% 0, 62% 0, 70% 100%, 30% 100%);
 }
 
-.dress-sleeve {
-  background: color-mix(in srgb, var(--dress-color) 82%, #ffffff 18%);
-  grid-row: 2;
-  height: 118px;
-  margin-top: 6px;
-  width: 54px;
-  z-index: 1;
+.fallback-skirt.full {
+  width: 250px;
 }
 
-.dress-sleeve.left {
-  border-radius: 28px 10px 22px 30px;
-  clip-path: polygon(100% 0, 78% 100%, 20% 94%, 0 20%);
-  grid-column: 1;
-  justify-self: end;
-}
-
-.dress-sleeve.right {
-  border-radius: 10px 28px 30px 22px;
-  clip-path: polygon(0 0, 100% 20%, 80% 94%, 22% 100%);
-  grid-column: 3;
-  justify-self: start;
-}
-
-.sleeve-sleeveless .dress-sleeve,
-.sleeve-unknown .dress-sleeve {
-  opacity: 0.16;
-}
-
-.sleeve-cap .dress-sleeve,
-.sleeve-short .dress-sleeve {
-  height: 56px;
-}
-
-.sleeve-puff .dress-sleeve,
-.sleeve-bishop .dress-sleeve,
-.sleeve-flutter .dress-sleeve {
-  width: 68px;
-}
-
-.neckline-v_neck .dress-neckline {
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-}
-
-.neckline-sweetheart .dress-neckline {
-  border-radius: 34px 34px 8px 8px;
-  clip-path: polygon(0 22%, 30% 0, 50% 35%, 70% 0, 100% 22%, 88% 100%, 12% 100%);
-}
-
-.neckline-off_shoulder .dress-neckline {
-  height: 20px;
-  margin-top: 12px;
-  width: 162px;
-}
-
-.skirt-full .dress-skirt,
-.skirt-ball_gown .dress-skirt {
-  clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%);
-  width: 318px;
-}
-
-.skirt-straight .dress-skirt,
-.silhouette-sheath .dress-skirt,
-.silhouette-column .dress-skirt {
-  clip-path: polygon(36% 0, 64% 0, 76% 100%, 24% 100%);
-  width: 220px;
+.fallback-skirt.mermaid {
+  clip-path: polygon(36% 0, 64% 0, 58% 60%, 88% 100%, 12% 100%, 42% 60%);
 }
 
 .preview-footer {
@@ -378,13 +407,16 @@ h1 {
   gap: 12px;
   grid-auto-rows: min-content;
   max-height: calc(100vh - 92px);
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 .panel {
   background: #fbfcfb;
   border: 1px solid #cfd5d1;
   border-radius: 8px;
+  min-width: 0;
   padding: 13px;
 }
 
@@ -592,7 +624,7 @@ dd {
 .voice-actions {
   display: grid;
   gap: 8px;
-  grid-template-columns: 92px minmax(132px, 1fr) 92px;
+  grid-template-columns: 78px minmax(118px, 1fr) 78px;
 }
 
 .voice-actions button {

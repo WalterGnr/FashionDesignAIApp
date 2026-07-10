@@ -1,6 +1,6 @@
 # Sprint 07: Fast Visual Preview Planning
 
-Status: Planning completed on 2026-07-09.
+Status: Planning and initial implementation completed on 2026-07-09.
 
 Suggested duration: 1 to 2 weeks.
 
@@ -22,6 +22,9 @@ Designers need immediate visual feedback. However, the MVP should not wait for p
 - Visual test strategy
 - Sprint 07 progress tracker
 - Sprint 07 completion record
+- Three.js preview implementation
+- mapper and interaction tests
+- Sprint 07 development completion record
 
 ## Planning Artifacts
 
@@ -33,6 +36,9 @@ Designers need immediate visual feedback. However, the MVP should not wait for p
 - `docs/preview/visual_test_strategy.md`
 - `docs/sprints/07_sprint_progress_tracker.md`
 - `docs/sprints/07_sprint_completion_record.md`
+- `docs/sprints/07_sprint_development_completion_record.md`
+- `apps/desktop/src/renderer/src/preview`
+- `apps/desktop/tests/preview-mapper.test.ts`
 
 ## Architecture Decision
 
@@ -59,9 +65,8 @@ The first implementation maps silhouette, skirt shape/fullness, hem length, neck
   - Final fabric behavior
 - Define visual testing expectations.
 
-## Non-Goals
+## Non-Goals Preserved
 
-- No Three.js implementation during planning.
 - No garment physics.
 - No AI image generation.
 - No production pattern logic.
@@ -85,9 +90,4 @@ Label the initial preview internally as approximate. It should be useful for des
 
 ## Next Implementation Slice
 
-- add Three.js, React Three Fiber, and established camera controls
-- implement a pure `DressSpec` to preview-parameter mapper
-- build the mannequin and modular dress scene
-- add constrained view controls and reset
-- keep the current 2D geometry as the safe fallback
-- verify with automated screenshots and canvas pixel checks
+Completed. The next preview improvements belong to later fit/model-profile and packaging work rather than expanding Sprint 07.

@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-09
 
-Status: Sprint 00 planning, Sprint 01 through Sprint 06 implementation, and Sprint 07 planning are complete. Plan Sprint 08 before implementing Sprint 07.
+Status: Sprint 00 planning, Sprint 01 through Sprint 07 implementation, and Sprint 08 planning are complete. Plan Sprint 09 before implementing Sprint 08.
 
 ## Planning Assumption
 
@@ -80,13 +80,15 @@ Plan the first simple visual preview driven by structured spec data, using 2D/3D
 
 File: `07_sprint_fast_visual_preview.md`
 
-Current status: fast visual preview planning artifacts completed. Implementation follows Sprint 06.
+Current status: fast visual preview planning and initial Three.js implementation completed.
 
 ### Sprint 08: Async Rendering and AI Images Planning
 
 Plan background render jobs, image generation, render traceability, and object storage.
 
 File: `08_sprint_async_rendering_ai_images.md`
+
+Current status: async rendering and AI image planning artifacts completed. Implementation follows Sprint 07.
 
 ### Sprint 09: Tech Pack Export Planning
 

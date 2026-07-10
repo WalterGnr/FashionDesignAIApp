@@ -1,6 +1,6 @@
 # AI Fashion Design App
 
-Status: Sprint 01 through Sprint 06 implementation completed; Sprint 07 planning completed.
+Status: Sprint 01 through Sprint 07 implementation completed; Sprint 08 planning completed.
 
 ## Product Goal
 
@@ -45,7 +45,11 @@ Sprint 06 completed: Backend, Database, and Versioning Planning.
 
 Sprint 07 completed: Fast Visual Preview Planning.
 
+Sprint 08 completed: Async Rendering and AI Images Planning.
+
 Sprint 06 implementation completed: FastAPI and PostgreSQL immutable design persistence.
+
+Sprint 07 implementation completed: Spec-driven interactive Three.js dress preview.
 
 Sprint 00 deliverables:
 
@@ -152,6 +156,20 @@ Sprint 07 planning deliverables:
 - Camera and interaction plan
 - Performance and WebGL fallback strategy
 - Visual and canvas-pixel verification strategy
+- Pure `DressSpec` preview mapper
+- Interactive mannequin and modular dress scene
+- Mapped silhouette, skirt, length, neckline, sleeve, color, and fabric cues
+- Front, three-quarter, side, back, and reset camera controls
+- WebGL error fallback and visual verification
+
+Sprint 08 planning deliverables:
+
+- Durable render-job lifecycle
+- GPT Image provider strategy and versioned prompt contract
+- Redis worker and transactional outbox architecture
+- Private object-storage plan
+- Render traceability, idempotency, and signed webhook rules
+- Variation comparison, cost, safety, and privacy plans
 
 ## Important Documents
 
@@ -178,12 +196,15 @@ Sprint 07 planning deliverables:
 - [Sprint 06 development completion record](docs/sprints/06_sprint_development_completion_record.md)
 - [Fast visual preview planning docs](docs/preview/README.md)
 - [Sprint 07 completion record](docs/sprints/07_sprint_completion_record.md)
+- [Sprint 07 development completion record](docs/sprints/07_sprint_development_completion_record.md)
+- [Async concept rendering planning docs](docs/rendering/README.md)
+- [Sprint 08 completion record](docs/sprints/08_sprint_completion_record.md)
 
 ## Implemented Code
 
 - `packages/domain`: shared TypeScript package for the dress-only domain contract.
 - `packages/ai`: provider-free AI command interpretation contracts, deterministic MVP interpreter, and execution boundary.
-- `apps/desktop`: Electron + React + Vite desktop shell with typed preload IPC, designer workflow UI, and first local voice interaction slice.
+- `apps/desktop`: Electron + React desktop workspace with typed preload IPC, voice workflow, versioned design editing, and an interactive Three.js dress preview.
 - `services/api`: FastAPI + SQLAlchemy service with PostgreSQL migrations and immutable design version persistence.
 - Root npm workspace scripts:
   - `npm run typecheck`
@@ -197,4 +218,4 @@ Before starting a new task, follow [AGENTS.md](AGENTS.md). Read the project cont
 
 ## Not Yet Implemented
 
-This repository now contains the Electron designer workspace, local voice interaction, and the first FastAPI/PostgreSQL persistence service. The desktop is not yet wired to save through that service. Production live transcription, tech pack export, high-quality visual rendering, production authentication, and live OpenAI integration are not yet implemented.
+This repository now contains the Electron designer workspace, local voice interaction, interactive fast 3D preview, and the first FastAPI/PostgreSQL persistence service. The desktop is not yet wired to save through that service. Production live transcription, asynchronous high-quality concept images, tech pack export, production authentication, and live OpenAI integration are not yet implemented.

@@ -1,6 +1,6 @@
 # Tooling Knowledge Base
 
-Last updated: 2026-06-19
+Last updated: 2026-07-09
 
 Purpose: keep a durable memory of the tools, frameworks, and engineering decisions needed to build the AI fashion design desktop software.
 
@@ -9,6 +9,25 @@ Purpose: keep a durable memory of the tools, frameworks, and engineering decisio
 The app is a desktop fashion design tool where designers use fast voice interaction with AI to create and revise dresses. The software must preserve designer control while helping companies move faster from idea to production-ready technical specification.
 
 The most important technical principle is that the structured garment spec is the source of truth. Image generation and 3D previews are visual outputs from that source of truth, not the primary data model.
+
+## Implemented Preview Tooling
+
+Sprint 07 added:
+
+- Three.js 0.185.1
+- React Three Fiber 9.6.1
+- React Three Drei 10.7.7
+- procedural `LatheGeometry` dress profiles
+- on-demand rendering with constrained orbit controls
+- explicit Three.js geometry disposal
+- browser screenshot, interaction, constrained-viewport, and canvas pixel-variance checks
+
+Current rule:
+
+- keep Three.js dependencies inside the Electron renderer
+- keep the domain and AI packages renderer-independent
+- map the complete selected `DressSpec` through a pure function before rendering
+- preserve a deterministic 2D fallback when WebGL is unavailable
 
 ## Recommended Starting Stack
 

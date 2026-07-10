@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-09
 
-Status: Sprint 07 planning artifacts.
+Status: Sprint 07 planning and initial implementation completed.
 
 ## Purpose
 
@@ -25,3 +25,15 @@ The first scene will use reusable, parameterized geometry for a neutral mannequi
 ## Product Rule
 
 The preview is a fast visual interpretation of the selected immutable design version. It is never the source of truth and must not be presented as fit approval, fabric simulation, or a production pattern.
+
+## Current Implementation
+
+The renderer implementation lives in `apps/desktop/src/renderer/src/preview` and includes:
+
+- pure spec mapping
+- procedural mannequin and dress geometry
+- garment color and broad material cues
+- constrained camera controls
+- on-demand rendering
+- safe 2D fallback
+- mapper tests and browser visual verification

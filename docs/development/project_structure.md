@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-09
 
-Status: Foundation plus Sprint 01 through Sprint 06 implementation and Sprint 07 planning. `apps/desktop`, `packages/domain`, `packages/ai`, and the initial `services/api` persistence slice now exist.
+Status: Foundation plus Sprint 01 through Sprint 07 implementation and Sprint 08 planning. The Electron app now includes the first Three.js dress preview.
 
 ## Goals
 
@@ -65,6 +65,10 @@ Responsibilities:
 - Designer workflow React renderer
 - Typed command bar
 - Structured preview surface
+- React Three Fiber canvas
+- procedural mannequin and modular dress geometry
+- pure spec-to-preview mapping
+- camera presets and 2D WebGL fallback
 - AI change review
 - Spec inspector
 - Version timeline
@@ -98,7 +102,8 @@ Current implementation:
 - React renderer in `apps/desktop/src/renderer`
 - Designer session service in `apps/desktop/src/renderer/src/designer-session.ts`
 - Voice session service in `apps/desktop/src/renderer/src/voice-session.ts`
-- Vitest IPC contract, designer session, and voice session tests
+- Preview modules in `apps/desktop/src/renderer/src/preview`
+- Vitest IPC contract, designer session, voice session, and preview mapper tests
 
 ### `services/api`
 
