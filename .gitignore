@@ -29,13 +29,14 @@ __pycache__/
 *.sqlite3
 postgres-data/
 redis-data/
+.data/
 
 # Generated exports and local artifacts
-exports/
-uploads/
-renders/
-tmp/
-temp/
+/exports/
+/uploads/
+/renders/
+/tmp/
+/temp/
 
 # Logs
 *.log

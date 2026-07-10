@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-09
 
-Status: Sprint 00 planning, Sprint 01 through Sprint 07 implementation, and Sprint 08 planning are complete. Plan Sprint 09 before implementing Sprint 08.
+Status: Sprint 00 planning, Sprint 01 through Sprint 08 implementation, and Sprint 09 planning are complete. Plan Sprint 10 before implementing Sprint 09.
 
 ## Planning Assumption
 
@@ -88,13 +88,15 @@ Plan background render jobs, image generation, render traceability, and object s
 
 File: `08_sprint_async_rendering_ai_images.md`
 
-Current status: async rendering and AI image planning artifacts completed. Implementation follows Sprint 07.
+Current status: planning and implementation completed, including durable jobs, Redis/Celery, provider/storage adapters, and desktop concept comparison.
 
 ### Sprint 09: Tech Pack Export Planning
 
 Plan PDF/spreadsheet tech pack exports for manufacturer-facing documentation.
 
 File: `09_sprint_tech_pack_export.md`
+
+Current status: tech-pack export planning completed. Implementation follows Sprint 08.
 
 ### Sprint 10: Testing, Hardening, and MVP Release Planning
 

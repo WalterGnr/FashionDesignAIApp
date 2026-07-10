@@ -35,10 +35,12 @@ Proposed `render_assets` columns:
 ## Object Key Shape
 
 ```text
-owners/{owner_id}/designs/{design_id}/versions/{version_id}/renders/{render_job_id}/{asset_id}.png
+renders/{owner_prefix}/{design_prefix}/{version_prefix}/{render_job_id}/{asset_id}.png
 ```
 
-Object keys are internal identifiers. The API returns short-lived signed download URLs after ownership checks.
+The local adapter uses collision-resistant ID prefixes to stay below legacy Windows path limits. Full IDs remain in
+PostgreSQL. Object keys are internal identifiers. The API returns short-lived signed download URLs after ownership
+checks.
 
 ## Upload Safety
 

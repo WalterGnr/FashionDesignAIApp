@@ -1,12 +1,21 @@
+import logging
 from uuid import UUID
 
 from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.responses import FileResponse
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from fashion_api.config import Settings, get_settings
 from fashion_api.database import get_session
+from fashion_api.rendering import (
+    cancel_render_job,
+    create_render_jobs,
+    get_render_asset,
+    get_render_job,
+    list_render_jobs,
+)
 from fashion_api.schemas import (
     DesignCreate,
     DesignRead,
@@ -14,6 +23,9 @@ from fashion_api.schemas import (
     DesignVersionCreate,
     DesignVersionRead,
     HealthRead,
+    RenderBatchRead,
+    RenderCreate,
+    RenderJobRead,
 )
 from fashion_api.services import (
     ResourceNotFoundError,
@@ -25,9 +37,11 @@ from fashion_api.services import (
     list_design_versions,
     list_designs,
 )
+from fashion_api.storage import LocalRenderStorage
 
 settings = get_settings()
 app = FastAPI(title=settings.app_name, version=settings.app_version)
+logger = logging.getLogger(__name__)
 
 
 def current_owner_id(config: Settings = Depends(get_settings)) -> UUID:
@@ -124,3 +138,74 @@ def get_version_by_id(
         return get_design_version(session, design_id, version_id, owner_user_id)
     except ResourceNotFoundError as error:
         raise not_found_or_conflict(error) from error
+
+
+@app.post("/renders", response_model=RenderBatchRead, status_code=status.HTTP_202_ACCEPTED)
+def post_render(
+    payload: RenderCreate,
+    session: Session = Depends(get_session),
+    owner_user_id: UUID = Depends(current_owner_id),
+    config: Settings = Depends(get_settings),
+) -> RenderBatchRead:
+    try:
+        batch = create_render_jobs(session, payload, owner_user_id, config)
+    except (ResourceNotFoundError, VersionConflictError) as error:
+        raise not_found_or_conflict(error) from error
+    if config.render_dispatch_enabled and not batch.reused_existing:
+        try:
+            from fashion_api.tasks import wake_render_dispatcher
+
+            wake_render_dispatcher()
+        except Exception:
+            logger.exception("Render dispatcher wake-up failed; the durable outbox will retry.")
+    return batch
+
+
+@app.get("/renders", response_model=list[RenderJobRead])
+def get_renders(
+    design_id: UUID | None = None,
+    design_version_id: UUID | None = None,
+    session: Session = Depends(get_session),
+    owner_user_id: UUID = Depends(current_owner_id),
+) -> list[RenderJobRead]:
+    return list_render_jobs(session, owner_user_id, design_id, design_version_id)
+
+
+@app.get("/renders/{render_job_id}", response_model=RenderJobRead)
+def get_render_by_id(
+    render_job_id: UUID,
+    session: Session = Depends(get_session),
+    owner_user_id: UUID = Depends(current_owner_id),
+) -> RenderJobRead:
+    try:
+        return get_render_job(session, render_job_id, owner_user_id)
+    except ResourceNotFoundError as error:
+        raise not_found_or_conflict(error) from error
+
+
+@app.post("/renders/{render_job_id}/cancel", response_model=RenderJobRead)
+def post_render_cancel(
+    render_job_id: UUID,
+    session: Session = Depends(get_session),
+    owner_user_id: UUID = Depends(current_owner_id),
+) -> RenderJobRead:
+    try:
+        return cancel_render_job(session, render_job_id, owner_user_id)
+    except ResourceNotFoundError as error:
+        raise not_found_or_conflict(error) from error
+
+
+@app.get("/render-assets/{asset_id}")
+def get_render_asset_file(
+    asset_id: UUID,
+    session: Session = Depends(get_session),
+    owner_user_id: UUID = Depends(current_owner_id),
+    config: Settings = Depends(get_settings),
+) -> FileResponse:
+    try:
+        asset = get_render_asset(session, asset_id, owner_user_id)
+        storage = LocalRenderStorage(config.render_storage_root, config.render_max_asset_bytes)
+        path = storage.path_for(asset.object_key)
+    except (ResourceNotFoundError, FileNotFoundError) as error:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Render asset not found.") from error
+    return FileResponse(path, media_type=asset.content_type, filename=f"fashion-render-{asset.id}.png")

@@ -4,12 +4,14 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import (
     JSON,
+    BigInteger,
     CheckConstraint,
     DateTime,
     ForeignKey,
     Index,
     Integer,
     String,
+    Text,
     UniqueConstraint,
     func,
 )
@@ -80,3 +82,99 @@ class DesignVersion(Base):
     locked_fields_snapshot: Mapped[list[dict[str, Any]]] = mapped_column(JSON_VALUE, default=list)
     operation_ids: Mapped[list[str]] = mapped_column(JSON_VALUE, default=list)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class RenderJob(Base):
+    __tablename__ = "render_jobs"
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('queued', 'running', 'retrying', 'cancel_requested', 'canceled', 'succeeded', 'failed')",
+            name="ck_render_jobs_status",
+        ),
+        CheckConstraint("quality IN ('low', 'medium', 'high')", name="ck_render_jobs_quality"),
+        CheckConstraint(
+            "view_preset IN ('front', 'three_quarter', 'side', 'back')",
+            name="ck_render_jobs_view_preset",
+        ),
+        CheckConstraint("attempt_count >= 0", name="ck_render_jobs_attempt_count"),
+        CheckConstraint("max_attempts > 0", name="ck_render_jobs_max_attempts"),
+        CheckConstraint("variation_index > 0", name="ck_render_jobs_variation_index"),
+        Index("ix_render_jobs_owner_created", "owner_user_id", "created_at"),
+        Index("ix_render_jobs_design_version", "design_version_id", "created_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    owner_user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id", ondelete="RESTRICT"))
+    design_id: Mapped[UUID] = mapped_column(ForeignKey("designs.id", ondelete="CASCADE"))
+    design_version_id: Mapped[UUID] = mapped_column(ForeignKey("design_versions.id", ondelete="RESTRICT"))
+    render_style: Mapped[str] = mapped_column(String(60))
+    view_preset: Mapped[str] = mapped_column(String(40))
+    quality: Mapped[str] = mapped_column(String(20))
+    output_size: Mapped[str] = mapped_column(String(30))
+    status: Mapped[str] = mapped_column(String(30), default="queued")
+    prompt_contract_version: Mapped[str] = mapped_column(String(40))
+    provider: Mapped[str] = mapped_column(String(40))
+    provider_model: Mapped[str] = mapped_column(String(100))
+    provider_request_id: Mapped[str | None] = mapped_column(String(200))
+    variation_index: Mapped[int] = mapped_column(Integer, default=1)
+    attempt_count: Mapped[int] = mapped_column(Integer, default=0)
+    max_attempts: Mapped[int] = mapped_column(Integer, default=3)
+    idempotency_key: Mapped[str] = mapped_column(String(64), unique=True)
+    safe_error_code: Mapped[str | None] = mapped_column(String(80))
+    safe_error_message: Mapped[str | None] = mapped_column(String(500))
+    lease_owner: Mapped[str | None] = mapped_column(String(120))
+    lease_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    next_attempt_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
+class RenderJobInput(Base):
+    __tablename__ = "render_job_inputs"
+
+    render_job_id: Mapped[UUID] = mapped_column(ForeignKey("render_jobs.id", ondelete="CASCADE"), primary_key=True)
+    spec_snapshot: Mapped[dict[str, Any]] = mapped_column(JSON_VALUE)
+    locked_fields_snapshot: Mapped[list[dict[str, Any]]] = mapped_column(JSON_VALUE, default=list)
+    normalized_prompt: Mapped[str] = mapped_column(Text)
+    input_hash: Mapped[str] = mapped_column(String(64), index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class RenderAsset(Base):
+    __tablename__ = "render_assets"
+    __table_args__ = (
+        CheckConstraint("byte_size > 0", name="ck_render_assets_byte_size"),
+        CheckConstraint("width > 0 AND height > 0", name="ck_render_assets_dimensions"),
+        Index("ix_render_assets_version_created", "design_version_id", "created_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    render_job_id: Mapped[UUID] = mapped_column(ForeignKey("render_jobs.id", ondelete="CASCADE"), unique=True)
+    design_version_id: Mapped[UUID] = mapped_column(ForeignKey("design_versions.id", ondelete="RESTRICT"))
+    storage_provider: Mapped[str] = mapped_column(String(40))
+    object_key: Mapped[str] = mapped_column(String(500), unique=True)
+    content_type: Mapped[str] = mapped_column(String(100))
+    byte_size: Mapped[int] = mapped_column(BigInteger)
+    sha256: Mapped[str] = mapped_column(String(64))
+    width: Mapped[int] = mapped_column(Integer)
+    height: Mapped[int] = mapped_column(Integer)
+    output_format: Mapped[str] = mapped_column(String(20))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class OutboxEvent(Base):
+    __tablename__ = "outbox_events"
+    __table_args__ = (Index("ix_outbox_events_pending", "delivered_at", "created_at"),)
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    event_type: Mapped[str] = mapped_column(String(100))
+    aggregate_id: Mapped[UUID]
+    payload: Mapped[dict[str, Any]] = mapped_column(JSON_VALUE)
+    attempt_count: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    delivered_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))

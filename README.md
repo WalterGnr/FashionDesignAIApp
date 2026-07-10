@@ -1,6 +1,6 @@
 # AI Fashion Design App
 
-Status: Sprint 01 through Sprint 07 implementation completed; Sprint 08 planning completed.
+Status: Sprint 01 through Sprint 08 implementation completed; Sprint 09 planning completed.
 
 ## Product Goal
 
@@ -47,9 +47,13 @@ Sprint 07 completed: Fast Visual Preview Planning.
 
 Sprint 08 completed: Async Rendering and AI Images Planning.
 
+Sprint 09 completed: Tech Pack Export Planning.
+
 Sprint 06 implementation completed: FastAPI and PostgreSQL immutable design persistence.
 
 Sprint 07 implementation completed: Spec-driven interactive Three.js dress preview.
+
+Sprint 08 implementation completed: durable async concept render jobs, Redis/Celery worker, validated assets, provider adapters, and desktop comparison workflow.
 
 Sprint 00 deliverables:
 
@@ -171,6 +175,24 @@ Sprint 08 planning deliverables:
 - Render traceability, idempotency, and signed webhook rules
 - Variation comparison, cost, safety, and privacy plans
 
+Sprint 08 implementation deliverables:
+
+- PostgreSQL render jobs, immutable inputs, assets, and transactional outbox
+- Redis 8 and Celery worker/Beat processing
+- deterministic local mock provider and backend-only GPT Image 2 adapter
+- private local asset storage with PNG validation and SHA-256 checksums
+- render create/list/get/cancel/download API resources
+- selected-version synchronization through typed Electron IPC
+- background render controls, polling, cancellation, and comparison slots
+
+Sprint 09 planning deliverables:
+
+- canonical tech-pack snapshot contract
+- PDF and XLSX generation strategies
+- export readiness and missing-data rules
+- immutable export lifecycle and storage plan
+- manufacturer readability checklist
+
 ## Important Documents
 
 - [Project planning prompt](ai_fashion_design_app_planning_prompt.md)
@@ -199,13 +221,16 @@ Sprint 08 planning deliverables:
 - [Sprint 07 development completion record](docs/sprints/07_sprint_development_completion_record.md)
 - [Async concept rendering planning docs](docs/rendering/README.md)
 - [Sprint 08 completion record](docs/sprints/08_sprint_completion_record.md)
+- [Sprint 08 development completion record](docs/sprints/08_sprint_development_completion_record.md)
+- [Tech pack export planning docs](docs/exports/README.md)
+- [Sprint 09 completion record](docs/sprints/09_sprint_completion_record.md)
 
 ## Implemented Code
 
 - `packages/domain`: shared TypeScript package for the dress-only domain contract.
 - `packages/ai`: provider-free AI command interpretation contracts, deterministic MVP interpreter, and execution boundary.
-- `apps/desktop`: Electron + React desktop workspace with typed preload IPC, voice workflow, versioned design editing, and an interactive Three.js dress preview.
-- `services/api`: FastAPI + SQLAlchemy service with PostgreSQL migrations and immutable design version persistence.
+- `apps/desktop`: Electron + React desktop workspace with typed preload IPC, voice workflow, versioned design editing, interactive Three.js preview, and async concept comparison.
+- `services/api`: FastAPI + SQLAlchemy service with PostgreSQL persistence, Redis/Celery render jobs, provider adapters, and validated private render assets.
 - Root npm workspace scripts:
   - `npm run typecheck`
   - `npm test`
@@ -218,4 +243,4 @@ Before starting a new task, follow [AGENTS.md](AGENTS.md). Read the project cont
 
 ## Not Yet Implemented
 
-This repository now contains the Electron designer workspace, local voice interaction, interactive fast 3D preview, and the first FastAPI/PostgreSQL persistence service. The desktop is not yet wired to save through that service. Production live transcription, asynchronous high-quality concept images, tech pack export, production authentication, and live OpenAI integration are not yet implemented.
+This repository now contains the Electron designer workspace, local voice interaction, interactive fast 3D preview, immutable persistence, and an asynchronous concept-render workflow. General desktop save/load, production live transcription, tech-pack export, production authentication, and a live paid OpenAI image request are not yet implemented.

@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-09
 
-Status: Foundation plus Sprint 01 through Sprint 07 implementation and Sprint 08 planning. The Electron app now includes the first Three.js dress preview.
+Status: Foundation plus Sprint 01 through Sprint 08 implementation and Sprint 09 planning.
 
 ## Goals
 
@@ -76,6 +76,8 @@ Responsibilities:
 - Microphone controls
 - Transcript display
 - Local voice session state
+- Concept render controls and comparison slots
+- selected-version synchronization through typed IPC
 - Secure IPC usage
 
 Should not contain:
@@ -103,11 +105,12 @@ Current implementation:
 - Designer session service in `apps/desktop/src/renderer/src/designer-session.ts`
 - Voice session service in `apps/desktop/src/renderer/src/voice-session.ts`
 - Preview modules in `apps/desktop/src/renderer/src/preview`
-- Vitest IPC contract, designer session, voice session, and preview mapper tests
+- Concept render workflow in `ConceptRenderWorkspace.tsx`
+- Vitest IPC contract, designer session, voice session, preview mapper, and render session tests
 
 ### `services/api`
 
-Implemented initial FastAPI and PostgreSQL persistence service.
+Implemented FastAPI, PostgreSQL, Redis, and asynchronous render service.
 
 Responsibilities:
 
@@ -122,27 +125,28 @@ Current implementation:
 
 - FastAPI application package named `fashion_api`
 - Pydantic request and response contracts
-- SQLAlchemy models for users, designs, and immutable design versions
-- Alembic migration configuration and initial revision
+- SQLAlchemy models for users, designs, immutable design versions, render jobs, immutable render inputs, assets, and outbox events
+- Alembic migration configuration and three revisions
 - PostgreSQL JSONB spec snapshots
 - transaction-safe version creation and current-version pointer updates
 - ownership-scoped reads and writes using a development user context
-- unit/API tests plus an opt-in PostgreSQL integration test
+- Celery worker/Beat tasks, provider adapters, and local private asset storage
+- unit/API tests plus PostgreSQL integration tests
 
 Local infrastructure:
 
 - PostgreSQL 17 in `compose.yaml`
+- Redis 8 in `compose.yaml`
 - local Python dependencies in ignored `.venv`
 
 ### `services/workers`
 
-Future background workers.
+Future extraction boundary. Sprint 08 worker modules currently live with `services/api` so one Python package owns the initial contracts and migrations.
 
 Responsibilities:
 
-- AI image render jobs
 - PDF/spreadsheet export jobs
-- Long-running asynchronous tasks
+- future independently deployable long-running tasks
 
 ### `packages/domain`
 

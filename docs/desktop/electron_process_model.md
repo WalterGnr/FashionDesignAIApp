@@ -89,6 +89,9 @@ The preload script should:
 - use `contextBridge.exposeInMainWorld`
 - expose one stable namespace
 - hide raw `ipcRenderer`
+
+Because the renderer sandbox is enabled, the preload bundle is CommonJS. Electron does not support ESM imports in
+sandboxed preload scripts. The build emits `out/preload/index.js` while keeping the exposed API narrow and typed.
 - wrap each IPC channel in a typed function
 - avoid exposing event emitters directly unless carefully scoped
 - validate or normalize inputs where practical

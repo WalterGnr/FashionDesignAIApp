@@ -1,6 +1,6 @@
 # Fashion Design AI API
 
-FastAPI service for durable designs and immutable dress versions.
+FastAPI service for durable designs, immutable dress versions, and asynchronous concept renders.
 
 ## Local Setup On Windows
 
@@ -9,10 +9,21 @@ From the repository root:
 ```powershell
 py -m venv .venv
 .\.venv\Scripts\python -m pip install -e ".\services\api[dev]"
-docker compose up -d postgres
+docker compose up -d postgres redis
 .\.venv\Scripts\alembic -c services/api/alembic.ini upgrade head
+$env:RENDER_DISPATCH_ENABLED="true"
+$env:RENDER_PROVIDER="mock"
 .\.venv\Scripts\python -m uvicorn fashion_api.main:app --host 127.0.0.1 --port 8000 --reload
 ```
+
+In two additional PowerShell windows, run the worker and scheduler separately:
+
+```powershell
+.\.venv\Scripts\python -m celery -A fashion_api.celery_app:celery_app worker --pool=solo --loglevel=INFO
+.\.venv\Scripts\python -m celery -A fashion_api.celery_app:celery_app beat --schedule=.data/celerybeat-schedule --loglevel=INFO
+```
+
+Celery requires worker and Beat to be separate processes on Windows.
 
 API documentation is available at `http://127.0.0.1:8000/docs` while the service is running.
 
@@ -34,5 +45,10 @@ The default tests use an isolated in-memory database for speed. PostgreSQL remai
 - `POST /designs/{design_id}/versions`
 - `GET /designs/{design_id}/versions`
 - `GET /designs/{design_id}/versions/{version_id}`
+- `POST /renders`
+- `GET /renders`
+- `GET /renders/{render_job_id}`
+- `POST /renders/{render_job_id}/cancel`
+- `GET /render-assets/{asset_id}`
 
-No endpoint updates a design version. PostgreSQL also enforces immutable version snapshots with a trigger.
+No endpoint updates a design version or render input. PostgreSQL enforces both immutable snapshots with triggers.

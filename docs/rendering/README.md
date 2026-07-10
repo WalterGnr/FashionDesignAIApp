@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-09
 
-Status: Sprint 08 planning artifacts.
+Status: Sprint 08 planning and implementation completed.
 
 ## Purpose
 
@@ -21,6 +21,17 @@ Concept images are derived, versioned communication assets. The immutable dress 
 - Consider the Responses API image-generation tool for multi-turn image editing or provider-managed reference-image context.
 - Store final assets in object storage, not in PostgreSQL.
 - Treat webhooks as verified notifications; workers and the API reconcile final state idempotently.
+
+## Implemented Slice
+
+- PostgreSQL render jobs, immutable inputs, assets, and outbox
+- Redis/Celery worker and Windows-compatible separate Beat process
+- deterministic mock provider plus configured OpenAI GPT Image 2 adapter
+- private local storage with image validation and checksums
+- render API and typed Electron IPC
+- selected-version synchronization, background polling, cancellation, and comparison UI
+
+The default local provider is `mock`. Set `RENDER_PROVIDER=openai` and configure `OPENAI_API_KEY` only in the backend environment to use live image generation.
 
 ## Documents
 

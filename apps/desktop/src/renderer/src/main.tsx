@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import {
   AlertTriangle,
+  Box,
   CheckCircle2,
   Clock3,
   Download,
@@ -9,6 +10,7 @@ import {
   LockKeyhole,
   Mic,
   MicOff,
+  Images,
   PanelRight,
   RefreshCw,
   Send,
@@ -28,9 +30,11 @@ import {
 import { nextMockTranscript, VoiceSessionController, type VoiceSessionSnapshot } from "./voice-session.js";
 import { DressPreviewCanvas } from "./preview/DressPreviewCanvas.js";
 import { mapDressSpecToPreview } from "./preview/preview-mapper.js";
+import { ConceptRenderWorkspace } from "./ConceptRenderWorkspace.js";
 import "./styles.css";
 
 type ShellStatus = "checking" | "ready" | "error";
+type PreviewMode = "three_d" | "concept";
 
 type LatestCommand = {
   rawInput: string;
@@ -87,6 +91,7 @@ function App() {
   const [latestCommand, setLatestCommand] = useState<LatestCommand | null>(null);
   const [voiceSnapshot, setVoiceSnapshot] = useState<VoiceSessionSnapshot>(() => voiceControllerRef.current.snapshot());
   const [mockTranscriptIndex, setMockTranscriptIndex] = useState(0);
+  const [previewMode, setPreviewMode] = useState<PreviewMode>("three_d");
 
   const selectedVersion = versionHistory.find((version) => version.version_id === selectedVersionId) ?? currentVersion;
   const selectedSpec = selectedVersion.spec_snapshot;
@@ -289,12 +294,38 @@ function App() {
         <section className="preview-plane" aria-label="Design preview workspace">
           <div className="preview-stage">
             <div className="preview-toolbar" aria-label="Selected design summary">
-              <span>{isViewingCurrent ? "Current" : "Inspecting"}</span>
-              <span>Version {selectedVersion.version_number}</span>
-              <span>{valueText(selectedSpec.identity.dress_type.value)}</span>
+              <div className="preview-mode-switch" aria-label="Preview mode">
+                <button
+                  type="button"
+                  className={previewMode === "three_d" ? "selected" : ""}
+                  aria-pressed={previewMode === "three_d"}
+                  onClick={() => setPreviewMode("three_d")}
+                >
+                  <Box size={14} aria-hidden="true" />
+                  <span>3D Preview</span>
+                </button>
+                <button
+                  type="button"
+                  className={previewMode === "concept" ? "selected" : ""}
+                  aria-pressed={previewMode === "concept"}
+                  onClick={() => setPreviewMode("concept")}
+                >
+                  <Images size={14} aria-hidden="true" />
+                  <span>Concept Renders</span>
+                </button>
+              </div>
+              <div className="preview-context">
+                <span>{isViewingCurrent ? "Current" : "Inspecting"}</span>
+                <span>Version {selectedVersion.version_number}</span>
+                <span>{valueText(selectedSpec.identity.dress_type.value)}</span>
+              </div>
             </div>
 
-            <DressPreviewCanvas parameters={previewParameters} versionId={selectedVersion.version_id} />
+            {previewMode === "three_d" ? (
+              <DressPreviewCanvas parameters={previewParameters} versionId={selectedVersion.version_id} />
+            ) : (
+              <ConceptRenderWorkspace selectedVersion={selectedVersion} desktopApi={window.fashionDesktop} />
+            )}
 
             <div className="preview-spec-strip" aria-label="Visible spec summary">
               <span>{previewParameters.labels.color}</span>

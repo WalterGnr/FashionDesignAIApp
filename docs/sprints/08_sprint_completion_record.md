@@ -2,7 +2,7 @@
 
 Date: 2026-07-09
 
-Status: Completed async rendering and AI image planning.
+Status: Completed async rendering and AI image planning. See the separate development completion record for implementation evidence.
 
 ## Decision Summary
 
@@ -46,3 +46,5 @@ Met. The plans define terminal states, bounded retries, idempotency, budgets, si
 ## Implementation Entry Point
 
 Add render-job and outbox migrations, Redis, a worker package, a provider adapter, local object storage, and a mocked provider integration before any live image API call.
+
+Implementation completed in `08_sprint_development_completion_record.md`.

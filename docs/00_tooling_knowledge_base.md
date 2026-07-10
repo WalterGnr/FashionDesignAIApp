@@ -29,6 +29,29 @@ Current rule:
 - map the complete selected `DressSpec` through a pure function before rendering
 - preserve a deterministic 2D fallback when WebGL is unavailable
 
+## Implemented Async Render Tooling
+
+Sprint 08 added:
+
+- Redis 8 with append-only persistence and `noeviction`
+- Celery 5.6 with late acknowledgements, solo-pool Windows worker, and separate Beat scheduler
+- OpenAI Python SDK 2.45 with a backend-only GPT Image 2 provider adapter
+- Pillow 12.3 for bounded PNG generation and verification
+- PostgreSQL render jobs, immutable input snapshots, asset metadata, and transactional outbox
+- private local development storage with atomic publication and SHA-256 checksums
+- typed Electron IPC for version synchronization and render operations
+
+Current rules:
+
+- PostgreSQL owns durable job state; Redis is transport, not truth
+- the API commits the job and outbox event before queue publication
+- workers consume exact immutable version/input snapshots
+- provider bytes never enter PostgreSQL or general logs
+- live provider credentials stay in backend settings as secret values
+- Windows runs Celery worker and Beat as separate processes
+- sandboxed Electron preload bundles must be CommonJS; sandboxed ESM preloads are unsupported
+- local mock images are visibly labeled development output and never represented as AI output
+
 ## Recommended Starting Stack
 
 ### Desktop Shell

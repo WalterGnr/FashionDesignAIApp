@@ -1,6 +1,6 @@
-# Sprint 08: Async Rendering and AI Images Planning
+# Sprint 08: Async Rendering and AI Images
 
-Status: Planning completed on 2026-07-09.
+Status: Planning and implementation completed on 2026-07-09.
 
 Suggested duration: 1 to 2 weeks.
 
