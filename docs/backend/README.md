@@ -1,8 +1,8 @@
 # Backend Planning
 
-Last updated: 2026-07-08
+Last updated: 2026-07-09
 
-Status: Sprint 06 planning artifacts.
+Status: Sprint 06 planning and initial implementation completed.
 
 ## Purpose
 
@@ -29,13 +29,19 @@ The current version pointer can move, but version records do not mutate.
 - `migration_strategy.md`
 - `auth_ownership_and_security.md`
 
-## Implementation Reminder
+## Implemented Slice
 
-When Sprint 06 implementation begins, start with a narrow FastAPI service skeleton and one persistence flow:
+The first backend slice is implemented in `services/api`:
 
+- FastAPI health and OpenAPI interface
 - create a design
 - save an immutable design version
 - fetch a design with its current version
+- list designs and version history
+- PostgreSQL 17 local service through Docker Compose
+- SQLAlchemy models and Alembic revision `20260709_0001`
+- ownership-scoped queries using a development user context
+- PostgreSQL trigger enforcement for immutable versions
+- SQLite-fast tests and opt-in real PostgreSQL integration coverage
 
-Do not begin with render jobs, exports, or collaboration features.
-
+Render jobs, exports, collaboration, production authentication, and live AI session brokering remain future work.

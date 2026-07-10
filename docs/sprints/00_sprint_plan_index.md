@@ -1,8 +1,8 @@
 # Sprint Plan Index
 
-Last updated: 2026-07-08
+Last updated: 2026-07-09
 
-Status: Sprint 00 planning, Sprint 01 implementation, Sprint 02 implementation, Sprint 03 implementation, Sprint 04 implementation, Sprint 05 implementation, and Sprint 06 planning are complete. Sprint 06 implementation is the next recommended implementation target.
+Status: Sprint 00 planning, Sprint 01 through Sprint 06 implementation, and Sprint 07 planning are complete. Plan Sprint 08 before implementing Sprint 07.
 
 ## Planning Assumption
 
@@ -72,13 +72,15 @@ Plan the API, database schema, persistence model, immutable design versions, and
 
 File: `06_sprint_backend_database_versioning.md`
 
-Current status: backend, database, and versioning planning artifacts completed.
+Current status: backend, database, and versioning planning plus the initial FastAPI/PostgreSQL persistence implementation completed.
 
 ### Sprint 07: Fast Visual Preview Planning
 
 Plan the first simple visual preview driven by structured spec data, using 2D/3D approximation.
 
 File: `07_sprint_fast_visual_preview.md`
+
+Current status: fast visual preview planning artifacts completed. Implementation follows Sprint 06.
 
 ### Sprint 08: Async Rendering and AI Images Planning
 

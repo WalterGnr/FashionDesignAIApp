@@ -1,8 +1,8 @@
 # Project Structure Plan
 
-Last updated: 2026-07-08
+Last updated: 2026-07-09
 
-Status: Sprint 00 foundation document with Sprint 01 domain implementation, Sprint 02 AI package implementation, Sprint 03 desktop shell implementation, Sprint 04 UI implementation, Sprint 05 voice implementation, and Sprint 06 backend planning updates. Most backend/application folders remain planned, but `apps/desktop`, `packages/domain`, and `packages/ai` now exist.
+Status: Foundation plus Sprint 01 through Sprint 06 implementation and Sprint 07 planning. `apps/desktop`, `packages/domain`, `packages/ai`, and the initial `services/api` persistence slice now exist.
 
 ## Goals
 
@@ -37,6 +37,7 @@ FashionDesign App/
     database/
     development/
     product/
+    preview/
     security/
     sprints/
     ui/
@@ -101,7 +102,7 @@ Current implementation:
 
 ### `services/api`
 
-Future FastAPI backend.
+Implemented initial FastAPI and PostgreSQL persistence service.
 
 Responsibilities:
 
@@ -111,6 +112,22 @@ Responsibilities:
 - Database writes
 - Render/export job creation
 - Validation of AI-proposed operations
+
+Current implementation:
+
+- FastAPI application package named `fashion_api`
+- Pydantic request and response contracts
+- SQLAlchemy models for users, designs, and immutable design versions
+- Alembic migration configuration and initial revision
+- PostgreSQL JSONB spec snapshots
+- transaction-safe version creation and current-version pointer updates
+- ownership-scoped reads and writes using a development user context
+- unit/API tests plus an opt-in PostgreSQL integration test
+
+Local infrastructure:
+
+- PostgreSQL 17 in `compose.yaml`
+- local Python dependencies in ignored `.venv`
 
 ### `services/workers`
 

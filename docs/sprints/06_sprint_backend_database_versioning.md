@@ -1,6 +1,6 @@
 # Sprint 06: Backend, Database, and Versioning Planning
 
-Status: Planning completed on 2026-07-08.
+Status: Planning completed on 2026-07-08; initial implementation completed on 2026-07-09.
 
 Suggested duration: 1 to 2 weeks.
 
@@ -23,6 +23,13 @@ The app must preserve design traceability. Designers need to return to earlier v
 - Auth and user ownership plan
 - Sprint 06 progress tracker
 - Sprint 06 completion record
+- FastAPI service skeleton and health endpoint
+- PostgreSQL Docker Compose service
+- SQLAlchemy design/version models
+- Alembic initial migration
+- design and immutable version endpoints
+- backend and PostgreSQL integration tests
+- Sprint 06 development completion record
 
 ## Planning Artifacts
 
@@ -36,6 +43,9 @@ The app must preserve design traceability. Designers need to return to earlier v
 - `docs/backend/auth_ownership_and_security.md`
 - `docs/sprints/06_sprint_progress_tracker.md`
 - `docs/sprints/06_sprint_completion_record.md`
+- `docs/sprints/06_sprint_development_completion_record.md`
+- `services/api`
+- `compose.yaml`
 
 ## Key Planning Tasks
 
@@ -56,12 +66,13 @@ The app must preserve design traceability. Designers need to return to earlier v
 - Define indexes likely needed later.
 - Define migration strategy.
 
-## Non-Goals
+## Implementation Scope Preserved
 
-- No database creation.
-- No backend implementation.
-- No migrations.
 - No authentication implementation.
+- No model profile endpoint yet.
+- No command event or operation persistence yet.
+- No render/export workers.
+- No live AI session broker.
 
 ## Current Architecture Direction
 
@@ -92,3 +103,7 @@ Keep stable query fields as relational columns and keep the full dress spec snap
 ## Senior Developer Notes
 
 Versioning is not optional. It is core to designer trust and manufacturer accountability.
+
+## Implementation Result
+
+The first vertical slice now creates a dress and its initial version in one transaction, creates subsequent versions while locking the design row, advances the current-version pointer, and reads immutable history. PostgreSQL independently rejects updates to version snapshots through a database trigger.

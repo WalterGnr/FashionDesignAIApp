@@ -1,8 +1,8 @@
 # Sprint 06 Progress Tracker
 
-Last updated: 2026-07-08
+Last updated: 2026-07-09
 
-Status: Completed planning on 2026-07-08.
+Status: Completed planning on 2026-07-08 and initial implementation on 2026-07-09.
 
 ## Sprint 06 Name
 
@@ -21,13 +21,21 @@ Plan the FastAPI backend, PostgreSQL schema, immutable version model, model prof
 - model profile relationship plan
 - migration strategy
 - auth, ownership, and security plan
+- FastAPI service skeleton
+- health and database reachability endpoint
+- SQLAlchemy user, design, and design-version models
+- initial Alembic migration
+- create/list/fetch design endpoints
+- create/list/fetch immutable version endpoints
+- development ownership context
+- PostgreSQL and API verification
 
 ## What Sprint 06 Does Not Include
 
-- No backend implementation
-- No PostgreSQL database creation
-- No migrations
 - No authentication implementation
+- No model profile persistence yet
+- No command event or design operation persistence yet
+- No renderer-to-backend save integration yet
 - No live AI session broker implementation
 
 ## Progress Checklist
@@ -118,7 +126,51 @@ Artifact:
 
 - `docs/sprints/06_sprint_completion_record.md`
 
+### 11. FastAPI Service
+
+Status: Completed on 2026-07-09.
+
+Artifacts:
+
+- `services/api/src/fashion_api`
+- `services/api/pyproject.toml`
+- `services/api/README.md`
+
+### 12. PostgreSQL And Migration
+
+Status: Completed on 2026-07-09.
+
+Artifacts:
+
+- `compose.yaml`
+- `services/api/alembic.ini`
+- `services/api/alembic/versions/20260709_0001_design_versioning.py`
+
+Evidence:
+
+- PostgreSQL 17 container reached healthy state.
+- Alembic upgraded the database to `20260709_0001`.
+- PostgreSQL rejected a direct update to an immutable version.
+
+### 13. API And Persistence Tests
+
+Status: Completed on 2026-07-09.
+
+Evidence:
+
+- 7 backend tests passed.
+- Backend coverage: 91 percent.
+- Ruff lint and format checks passed.
+- Real PostgreSQL round-trip and immutability test passed.
+
+### 14. Development Completion Record
+
+Status: Completed on 2026-07-09.
+
+Artifact:
+
+- `docs/sprints/06_sprint_development_completion_record.md`
+
 ## Next Recommended Step
 
-After Sprint 05 implementation is complete, Sprint 06 implementation can create a narrow FastAPI service skeleton and one durable persistence flow for designs and immutable versions.
-
+Sprint 07 implementation is next. Plan Sprint 08 first to preserve the one-sprint-ahead workflow.

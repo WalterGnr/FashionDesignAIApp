@@ -1,6 +1,6 @@
 # Sprint 07: Fast Visual Preview Planning
 
-Status: Planning only.
+Status: Planning completed on 2026-07-09.
 
 Suggested duration: 1 to 2 weeks.
 
@@ -20,6 +20,25 @@ Designers need immediate visual feedback. However, the MVP should not wait for p
 - Mannequin/model profile strategy
 - Rendering performance expectations
 - Visual test strategy
+- Sprint 07 progress tracker
+- Sprint 07 completion record
+
+## Planning Artifacts
+
+- `docs/preview/README.md`
+- `docs/preview/preview_architecture.md`
+- `docs/preview/spec_to_visual_mapping.md`
+- `docs/preview/scene_interaction_and_camera.md`
+- `docs/preview/performance_and_fallback_strategy.md`
+- `docs/preview/visual_test_strategy.md`
+- `docs/sprints/07_sprint_progress_tracker.md`
+- `docs/sprints/07_sprint_completion_record.md`
+
+## Architecture Decision
+
+Use React Three Fiber over Three.js for the primary preview. Build a parameterized low-poly mannequin and dress from reusable procedural geometry, render on demand, and preserve a deterministic 2D fallback for WebGL failure.
+
+The first implementation maps silhouette, skirt shape/fullness, hem length, neckline, sleeves, color, and broad fabric finish. It does not implement cloth physics, pattern accuracy, or production fit approval.
 
 ## Key Planning Tasks
 
@@ -42,7 +61,7 @@ Designers need immediate visual feedback. However, the MVP should not wait for p
 
 ## Non-Goals
 
-- No Three.js implementation.
+- No Three.js implementation during planning.
 - No garment physics.
 - No AI image generation.
 - No production pattern logic.
@@ -63,3 +82,12 @@ Designers need immediate visual feedback. However, the MVP should not wait for p
 ## Senior Developer Notes
 
 Label the initial preview internally as approximate. It should be useful for design direction, not final fit approval.
+
+## Next Implementation Slice
+
+- add Three.js, React Three Fiber, and established camera controls
+- implement a pure `DressSpec` to preview-parameter mapper
+- build the mannequin and modular dress scene
+- add constrained view controls and reset
+- keep the current 2D geometry as the safe fallback
+- verify with automated screenshots and canvas pixel checks

@@ -1,6 +1,6 @@
 # AI Fashion Design App
 
-Status: Sprint 01, Sprint 02, Sprint 03, Sprint 04, and Sprint 05 implementation completed; Sprint 06 planning completed.
+Status: Sprint 01 through Sprint 06 implementation completed; Sprint 07 planning completed.
 
 ## Product Goal
 
@@ -42,6 +42,10 @@ Sprint 04 implementation completed: Designer Workflow UI.
 Sprint 05 implementation completed: Voice Interaction.
 
 Sprint 06 completed: Backend, Database, and Versioning Planning.
+
+Sprint 07 completed: Fast Visual Preview Planning.
+
+Sprint 06 implementation completed: FastAPI and PostgreSQL immutable design persistence.
 
 Sprint 00 deliverables:
 
@@ -134,6 +138,20 @@ Sprint 06 deliverables:
 - Model profile relationship plan
 - Migration strategy
 - Auth, ownership, and security plan
+- FastAPI service in `services/api`
+- PostgreSQL 17 local service in `compose.yaml`
+- SQLAlchemy models and Alembic migration
+- Design and immutable version API endpoints
+- Database-level version immutability enforcement
+- Backend and PostgreSQL integration tests
+
+Sprint 07 planning deliverables:
+
+- React Three Fiber and Three.js preview architecture
+- Deterministic spec-to-visual mapping
+- Camera and interaction plan
+- Performance and WebGL fallback strategy
+- Visual and canvas-pixel verification strategy
 
 ## Important Documents
 
@@ -157,12 +175,16 @@ Sprint 06 deliverables:
 - [Sprint 05 development completion record](docs/sprints/05_sprint_development_completion_record.md)
 - [Backend planning docs](docs/backend/README.md)
 - [Sprint 06 completion record](docs/sprints/06_sprint_completion_record.md)
+- [Sprint 06 development completion record](docs/sprints/06_sprint_development_completion_record.md)
+- [Fast visual preview planning docs](docs/preview/README.md)
+- [Sprint 07 completion record](docs/sprints/07_sprint_completion_record.md)
 
 ## Implemented Code
 
 - `packages/domain`: shared TypeScript package for the dress-only domain contract.
 - `packages/ai`: provider-free AI command interpretation contracts, deterministic MVP interpreter, and execution boundary.
 - `apps/desktop`: Electron + React + Vite desktop shell with typed preload IPC, designer workflow UI, and first local voice interaction slice.
+- `services/api`: FastAPI + SQLAlchemy service with PostgreSQL migrations and immutable design version persistence.
 - Root npm workspace scripts:
   - `npm run typecheck`
   - `npm test`
@@ -175,4 +197,4 @@ Before starting a new task, follow [AGENTS.md](AGENTS.md). Read the project cont
 
 ## Not Yet Implemented
 
-This repository now contains the first Electron desktop shell, designer workflow UI, and local voice interaction slice. It does not yet contain the FastAPI backend implementation, database migrations, production live transcription, tech pack export, high-quality visual render, or live OpenAI integration.
+This repository now contains the Electron designer workspace, local voice interaction, and the first FastAPI/PostgreSQL persistence service. The desktop is not yet wired to save through that service. Production live transcription, tech pack export, high-quality visual rendering, production authentication, and live OpenAI integration are not yet implemented.
