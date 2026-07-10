@@ -1,6 +1,6 @@
 # Sprint 05: Voice Interaction Planning
 
-Status: Planning completed on 2026-07-08.
+Status: Planning and initial implementation completed on 2026-07-08.
 
 Suggested duration: 1 to 2 weeks.
 
@@ -22,6 +22,8 @@ Voice is the primary interaction method. The product succeeds only if speaking f
 - Latency expectations
 - Privacy and retention expectations
 - Voice implementation readiness criteria
+- First local voice interaction implementation
+- Voice session tests
 
 ## Planning Artifacts
 
@@ -34,6 +36,9 @@ Voice is the primary interaction method. The product succeeds only if speaking f
 - `docs/voice/latency_and_quality_targets.md`
 - `docs/sprints/05_sprint_progress_tracker.md`
 - `docs/sprints/05_sprint_completion_record.md`
+- `docs/sprints/05_sprint_development_completion_record.md`
+- `apps/desktop/src/renderer/src/voice-session.ts`
+- `apps/desktop/tests/voice-session.test.ts`
 
 ## Key Planning Tasks
 
@@ -92,10 +97,10 @@ Do not build yet:
 
 ## Non-Goals
 
-- No live microphone code.
 - No Realtime API integration.
 - No prompt implementation.
-- No UI implementation beyond planning.
+- No backend session broker implementation.
+- No raw audio storage.
 
 ## Acceptance Criteria
 
@@ -105,6 +110,7 @@ Do not build yet:
 - Latency expectations are realistic.
 - Transcript retention and privacy expectations are documented.
 - The first implementation slice can be built without guessing the session state model.
+- The first local voice interaction slice can be tested without production Realtime credentials.
 
 ## Risks
 

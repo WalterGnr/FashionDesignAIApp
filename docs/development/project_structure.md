@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 00 foundation document with Sprint 01 domain implementation, Sprint 02 AI package implementation, Sprint 03 desktop shell implementation, Sprint 04 UI implementation, and Sprint 05 voice planning updates. Most backend/application folders remain planned, but `apps/desktop`, `packages/domain`, and `packages/ai` now exist.
+Status: Sprint 00 foundation document with Sprint 01 domain implementation, Sprint 02 AI package implementation, Sprint 03 desktop shell implementation, Sprint 04 UI implementation, Sprint 05 voice implementation, and Sprint 06 backend planning updates. Most backend/application folders remain planned, but `apps/desktop`, `packages/domain`, and `packages/ai` now exist.
 
 ## Goals
 
@@ -33,6 +33,7 @@ FashionDesign App/
     ai/
     api/
     architecture/
+    backend/
     database/
     development/
     product/
@@ -67,8 +68,9 @@ Responsibilities:
 - Spec inspector
 - Version timeline
 - Locked fields panel
-- Future microphone controls
-- Future transcript display
+- Microphone controls
+- Transcript display
+- Local voice session state
 - Secure IPC usage
 
 Should not contain:
@@ -94,7 +96,8 @@ Current implementation:
 - IPC contracts in `apps/desktop/src/shared`
 - React renderer in `apps/desktop/src/renderer`
 - Designer session service in `apps/desktop/src/renderer/src/designer-session.ts`
-- Vitest IPC contract and designer session tests
+- Voice session service in `apps/desktop/src/renderer/src/voice-session.ts`
+- Vitest IPC contract, designer session, and voice session tests
 
 ### `services/api`
 

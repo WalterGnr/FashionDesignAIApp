@@ -1,5 +1,5 @@
 import { interpretAndApplyDesignerCommand, type InterpretAndApplyResult } from "@fashion-design-ai/ai";
-import type { DesignVersion, DressSpec, LockedField, ValueStatus } from "@fashion-design-ai/domain";
+import type { DesignVersion, DressSpec, LockedField, OperationSource, ValueStatus } from "@fashion-design-ai/domain";
 
 export type CommandStatus = "idle" | "interpreting" | "accepted" | "rejected" | "needs_clarification" | "no_op";
 
@@ -21,6 +21,7 @@ export type DesignerCommandResult = {
 
 type ApplyDesignerTextCommandInput = {
   rawInput: string;
+  source?: OperationSource;
   currentVersion: DesignVersion;
   versionHistory: DesignVersion[];
   now?: string;
@@ -71,7 +72,7 @@ export function fieldRowsFromSpec(spec: DressSpec, lockedFields: LockedField[]):
 export function applyDesignerTextCommand(input: ApplyDesignerTextCommandInput): DesignerCommandResult {
   const outcome = interpretAndApplyDesignerCommand({
     rawInput: input.rawInput,
-    source: "text",
+    source: input.source ?? "text",
     rawInputRef: `desktop-command-${input.versionHistory.length + 1}`,
     currentVersion: input.currentVersion,
     versionHistory: input.versionHistory,
@@ -114,4 +115,3 @@ export function commandStatusLabel(status: CommandStatus): string {
 
   return labels[status];
 }
-

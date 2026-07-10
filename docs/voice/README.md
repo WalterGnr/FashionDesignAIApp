@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 05 planning artifacts.
+Status: Sprint 05 planning artifacts plus initial implementation.
 
 ## Purpose
 
@@ -34,3 +34,25 @@ Sprint 05 implementation should not store long-lived AI API keys in the Electron
 
 The future renderer may request microphone permission and manage local WebRTC state, but secure AI session creation belongs behind a backend-controlled boundary.
 
+## Implemented Voice Slice
+
+Implemented in:
+
+- `apps/desktop/src/renderer/src/voice-session.ts`
+- `apps/desktop/src/renderer/src/main.tsx`
+- `apps/desktop/tests/voice-session.test.ts`
+
+Current capabilities:
+
+- local voice session state machine
+- microphone permission request path
+- partial/final transcript state
+- sample transcript flow for development
+- final transcript application through the validated command path
+
+Still future:
+
+- production Realtime API session broker
+- live streamed transcription
+- backend transcript persistence
+- voice session cost controls

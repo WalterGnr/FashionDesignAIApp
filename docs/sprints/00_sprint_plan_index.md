@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-08
 
-Status: Sprint 00 planning, Sprint 01 implementation, Sprint 02 implementation, Sprint 03 implementation, Sprint 04 implementation, and Sprint 05 planning are complete. Sprint 05 implementation is the next recommended implementation target.
+Status: Sprint 00 planning, Sprint 01 implementation, Sprint 02 implementation, Sprint 03 implementation, Sprint 04 implementation, Sprint 05 implementation, and Sprint 06 planning are complete. Sprint 06 implementation is the next recommended implementation target.
 
 ## Planning Assumption
 
@@ -64,13 +64,15 @@ Plan real-time speech-to-text, voice event handling, correction flow, and AI ses
 
 File: `05_sprint_voice_interaction.md`
 
-Current status: voice interaction planning artifacts completed.
+Current status: voice interaction planning artifacts and initial implementation completed.
 
 ### Sprint 06: Backend, Database, and Versioning Planning
 
 Plan the API, database schema, persistence model, immutable design versions, and model profiles.
 
 File: `06_sprint_backend_database_versioning.md`
+
+Current status: backend, database, and versioning planning artifacts completed.
 
 ### Sprint 07: Fast Visual Preview Planning
 

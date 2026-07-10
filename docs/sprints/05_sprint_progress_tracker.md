@@ -2,15 +2,15 @@
 
 Last updated: 2026-07-08
 
-Status: Completed planning on 2026-07-08.
+Status: Completed planning and initial implementation on 2026-07-08.
 
 ## Sprint 05 Name
 
-Voice Interaction Planning
+Voice Interaction Planning And Implementation
 
 ## Sprint 05 Goal
 
-Plan the voice workflow from microphone capture to transcript handling, secure realtime session setup, correction flow, and validated design operation application.
+Plan and implement the first voice workflow slice from microphone capture state to transcript handling and validated design operation application.
 
 ## What Sprint 05 Does Include
 
@@ -21,10 +21,15 @@ Plan the voice workflow from microphone capture to transcript handling, secure r
 - realtime session security plan
 - latency and quality targets
 - Sprint 05 completion record
+- local voice session state machine
+- microphone permission path
+- transcript panel
+- sample transcript path
+- final transcript command application
+- voice session tests
 
 ## What Sprint 05 Does Not Include
 
-- No live microphone implementation
 - No production Realtime API integration
 - No backend implementation
 - No raw audio storage
@@ -109,7 +114,26 @@ Artifact:
 
 - `docs/sprints/05_sprint_completion_record.md`
 
+### 10. Voice Session Implementation
+
+Status: Completed on 2026-07-08.
+
+Artifacts:
+
+- `apps/desktop/src/renderer/src/voice-session.ts`
+- `apps/desktop/tests/voice-session.test.ts`
+- `apps/desktop/src/renderer/src/main.tsx`
+- `apps/desktop/src/renderer/src/styles.css`
+
+### 11. Implementation Verification
+
+Status: Completed on 2026-07-08.
+
+Evidence:
+
+- `npm run typecheck`
+- `npm test --workspace @fashion-design-ai/desktop`
+
 ## Next Recommended Step
 
-After Sprint 04 implementation is complete, Sprint 05 implementation can add the microphone state machine and transcript surface while still using the existing typed command handler for final command execution.
-
+After Sprint 05 implementation, Sprint 06 implementation can start the first backend persistence slice from the Sprint 06 planning artifacts.

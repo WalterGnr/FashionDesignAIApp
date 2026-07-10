@@ -8,6 +8,7 @@ import {
   History,
   LockKeyhole,
   Mic,
+  MicOff,
   PanelRight,
   RefreshCw,
   Send,
@@ -24,6 +25,7 @@ import {
   type CommandStatus,
   type DesignerCommandResult
 } from "./designer-session.js";
+import { nextMockTranscript, VoiceSessionController, type VoiceSessionSnapshot } from "./voice-session.js";
 import "./styles.css";
 
 type ShellStatus = "checking" | "ready" | "error";
@@ -91,6 +93,7 @@ function statusIcon(status: CommandStatus) {
 function App() {
   const initialVersion = useMemo(() => createInitialDesignVersion(), []);
   const commandInputRef = useRef<HTMLInputElement | null>(null);
+  const voiceControllerRef = useRef(new VoiceSessionController());
   const [appInfo, setAppInfo] = useState<DesktopResponse<AppInfo> | null>(null);
   const [health, setHealth] = useState<DesktopResponse<HealthPingResult> | null>(null);
   const [shellStatus, setShellStatus] = useState<ShellStatus>("checking");
@@ -100,6 +103,8 @@ function App() {
   const [versionHistory, setVersionHistory] = useState([initialVersion]);
   const [selectedVersionId, setSelectedVersionId] = useState(initialVersion.version_id);
   const [latestCommand, setLatestCommand] = useState<LatestCommand | null>(null);
+  const [voiceSnapshot, setVoiceSnapshot] = useState<VoiceSessionSnapshot>(() => voiceControllerRef.current.snapshot());
+  const [mockTranscriptIndex, setMockTranscriptIndex] = useState(0);
 
   const selectedVersion = versionHistory.find((version) => version.version_id === selectedVersionId) ?? currentVersion;
   const selectedSpec = selectedVersion.spec_snapshot;
@@ -157,6 +162,17 @@ function App() {
     });
   }
 
+  function applyCommandResult(rawInput: string, result: DesignerCommandResult) {
+    setLatestCommand({ rawInput, result });
+    setCommandStatus(result.status);
+
+    if (result.status === "accepted") {
+      setCurrentVersion(result.currentVersion);
+      setVersionHistory(result.versionHistory);
+      setSelectedVersionId(result.currentVersion.version_id);
+    }
+  }
+
   function applyCommand() {
     const rawInput = commandInput.trim();
     if (!rawInput) {
@@ -171,15 +187,48 @@ function App() {
       versionHistory
     });
 
-    setLatestCommand({ rawInput, result });
-    setCommandStatus(result.status);
-
+    applyCommandResult(rawInput, result);
     if (result.status === "accepted") {
-      setCurrentVersion(result.currentVersion);
-      setVersionHistory(result.versionHistory);
-      setSelectedVersionId(result.currentVersion.version_id);
       setCommandInput("");
     }
+  }
+
+  async function toggleVoiceSession() {
+    if (voiceSnapshot.state === "listening") {
+      setVoiceSnapshot(voiceControllerRef.current.stop());
+      return;
+    }
+
+    setVoiceSnapshot(voiceControllerRef.current.snapshot());
+    const nextSnapshot = await voiceControllerRef.current.start();
+    setVoiceSnapshot(nextSnapshot);
+  }
+
+  function simulateTranscript() {
+    const transcript = nextMockTranscript(mockTranscriptIndex);
+    setMockTranscriptIndex((index) => index + 1);
+    voiceControllerRef.current.receivePartialTranscript(transcript.slice(0, Math.max(18, Math.floor(transcript.length * 0.58))));
+    const finalSnapshot = voiceControllerRef.current.receiveFinalTranscript(transcript);
+    setVoiceSnapshot(finalSnapshot);
+  }
+
+  function applyVoiceTranscript() {
+    const rawInput = voiceSnapshot.finalTranscript.trim();
+    if (!rawInput) {
+      return;
+    }
+
+    setCommandStatus("interpreting");
+    const application = voiceControllerRef.current.applyFinalTranscript({
+      currentVersion,
+      versionHistory
+    });
+    setVoiceSnapshot(application.snapshot);
+    applyCommandResult(rawInput, application.commandResult);
+  }
+
+  function cancelVoiceTranscript() {
+    setVoiceSnapshot(voiceControllerRef.current.interrupt());
   }
 
   const operationList =
@@ -204,8 +253,13 @@ function App() {
             applyCommand();
           }}
         >
-          <button type="button" className="icon-button" title="Voice input is planned for Sprint 05" disabled>
-            <Mic size={17} aria-hidden="true" />
+          <button
+            type="button"
+            className={`icon-button voice-toggle ${voiceSnapshot.state}`}
+            title={voiceSnapshot.state === "listening" ? "Stop listening" : "Start voice session"}
+            onClick={toggleVoiceSession}
+          >
+            {voiceSnapshot.state === "listening" ? <MicOff size={17} aria-hidden="true" /> : <Mic size={17} aria-hidden="true" />}
             <span className="sr-only">Voice input</span>
           </button>
           <label className="sr-only" htmlFor="designer-command">
@@ -332,6 +386,52 @@ function App() {
             ) : (
               <div className="quiet-state">No command applied yet.</div>
             )}
+          </section>
+
+          <section className="panel voice-panel">
+            <h2>
+              <Mic size={17} aria-hidden="true" />
+              Voice
+            </h2>
+            <div className="voice-status-row">
+              <span className={`voice-state ${voiceSnapshot.state}`}>{valueText(voiceSnapshot.state)}</span>
+              <span>{voiceSnapshot.events.length} events</span>
+            </div>
+            <div className="transcript-stack">
+              <div className="transcript-box">
+                <span>Partial</span>
+                <strong>{voiceSnapshot.partialTranscript || "Empty"}</strong>
+              </div>
+              <div className="transcript-box final">
+                <span>Final</span>
+                <strong>{voiceSnapshot.finalTranscript || "Empty"}</strong>
+              </div>
+            </div>
+            {voiceSnapshot.lastError ? <div className="voice-error">{voiceSnapshot.lastError}</div> : null}
+            <div className="voice-actions">
+              <button type="button" onClick={simulateTranscript}>
+                <Sparkles size={15} aria-hidden="true" />
+                <span>Sample</span>
+              </button>
+              <button type="button" className="primary-action" onClick={applyVoiceTranscript} disabled={!voiceSnapshot.finalTranscript}>
+                <Send size={15} aria-hidden="true" />
+                <span>Apply transcript</span>
+              </button>
+              <button type="button" onClick={cancelVoiceTranscript} disabled={!voiceSnapshot.partialTranscript && !voiceSnapshot.finalTranscript}>
+                <MicOff size={15} aria-hidden="true" />
+                <span>Cancel</span>
+              </button>
+            </div>
+            {voiceSnapshot.events.length > 0 ? (
+              <ul className="voice-event-list" aria-label="Voice event history">
+                {voiceSnapshot.events.slice(0, 4).map((event) => (
+                  <li key={event.event_id}>
+                    <span>{valueText(event.type)}</span>
+                    <strong>{event.final_transcript ?? event.partial_transcript ?? event.message ?? event.created_at}</strong>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </section>
 
           <section className="panel">

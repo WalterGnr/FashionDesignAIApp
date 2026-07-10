@@ -1,6 +1,6 @@
 # Sprint 06: Backend, Database, and Versioning Planning
 
-Status: Planning only.
+Status: Planning completed on 2026-07-08.
 
 Suggested duration: 1 to 2 weeks.
 
@@ -21,6 +21,21 @@ The app must preserve design traceability. Designers need to return to earlier v
 - Versioning rules
 - Model profile relationship plan
 - Auth and user ownership plan
+- Sprint 06 progress tracker
+- Sprint 06 completion record
+
+## Planning Artifacts
+
+- `docs/backend/README.md`
+- `docs/backend/service_map.md`
+- `docs/backend/api_resource_plan.md`
+- `docs/backend/database_schema_plan.md`
+- `docs/backend/versioning_persistence_rules.md`
+- `docs/backend/model_profile_relationship_plan.md`
+- `docs/backend/migration_strategy.md`
+- `docs/backend/auth_ownership_and_security.md`
+- `docs/sprints/06_sprint_progress_tracker.md`
+- `docs/sprints/06_sprint_completion_record.md`
 
 ## Key Planning Tasks
 
@@ -48,12 +63,25 @@ The app must preserve design traceability. Designers need to return to earlier v
 - No migrations.
 - No authentication implementation.
 
+## Current Architecture Direction
+
+Use:
+
+- FastAPI for the API service
+- PostgreSQL as the primary database
+- SQLAlchemy for ORM/persistence modeling
+- Alembic for migrations
+- JSONB for immutable spec snapshots and flexible metadata
+
+Keep stable query fields as relational columns and keep the full dress spec snapshot as JSONB on immutable design versions.
+
 ## Acceptance Criteria
 
 - Data entities and relationships are clear.
 - The schema supports version history.
 - Renders and exports are traceable to design versions.
 - Model profiles are reusable across designs.
+- Migration and ownership strategy are documented.
 
 ## Risks
 

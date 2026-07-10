@@ -1,6 +1,6 @@
 # AI Fashion Design App
 
-Status: Sprint 01, Sprint 02, Sprint 03, and Sprint 04 implementation completed; Sprint 05 planning completed.
+Status: Sprint 01, Sprint 02, Sprint 03, Sprint 04, and Sprint 05 implementation completed; Sprint 06 planning completed.
 
 ## Product Goal
 
@@ -39,7 +39,9 @@ Sprint 03 implementation completed: secure Electron desktop shell.
 
 Sprint 04 implementation completed: Designer Workflow UI.
 
-Sprint 05 completed: Voice Interaction Planning.
+Sprint 05 implementation completed: Voice Interaction.
+
+Sprint 06 completed: Backend, Database, and Versioning Planning.
 
 Sprint 00 deliverables:
 
@@ -116,6 +118,22 @@ Sprint 05 deliverables:
 - Correction and interruption flow
 - Realtime session security plan
 - Latency and quality targets
+- Local voice session state machine
+- Microphone permission path
+- Partial/final transcript panel
+- Sample transcript flow
+- Final transcript command application
+- Desktop tests for voice session behavior
+
+Sprint 06 deliverables:
+
+- Backend service map
+- API resource plan
+- Database schema plan
+- Versioning persistence rules
+- Model profile relationship plan
+- Migration strategy
+- Auth, ownership, and security plan
 
 ## Important Documents
 
@@ -136,12 +154,15 @@ Sprint 05 deliverables:
 - [Sprint 04 development completion record](docs/sprints/04_sprint_development_completion_record.md)
 - [Voice interaction planning docs](docs/voice/README.md)
 - [Sprint 05 completion record](docs/sprints/05_sprint_completion_record.md)
+- [Sprint 05 development completion record](docs/sprints/05_sprint_development_completion_record.md)
+- [Backend planning docs](docs/backend/README.md)
+- [Sprint 06 completion record](docs/sprints/06_sprint_completion_record.md)
 
 ## Implemented Code
 
 - `packages/domain`: shared TypeScript package for the dress-only domain contract.
 - `packages/ai`: provider-free AI command interpretation contracts, deterministic MVP interpreter, and execution boundary.
-- `apps/desktop`: Electron + React + Vite desktop shell with typed preload IPC and first designer workflow UI.
+- `apps/desktop`: Electron + React + Vite desktop shell with typed preload IPC, designer workflow UI, and first local voice interaction slice.
 - Root npm workspace scripts:
   - `npm run typecheck`
   - `npm test`
@@ -154,4 +175,4 @@ Before starting a new task, follow [AGENTS.md](AGENTS.md). Read the project cont
 
 ## Not Yet Implemented
 
-This repository now contains the first Electron desktop shell and designer workflow UI. It does not yet contain the FastAPI backend, database schema, live voice, tech pack export, high-quality visual render, or live OpenAI integration.
+This repository now contains the first Electron desktop shell, designer workflow UI, and local voice interaction slice. It does not yet contain the FastAPI backend implementation, database migrations, production live transcription, tech pack export, high-quality visual render, or live OpenAI integration.
