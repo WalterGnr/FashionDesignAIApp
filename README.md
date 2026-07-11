@@ -1,6 +1,6 @@
 # AI Fashion Design App
 
-Status: Sprint 01 through Sprint 09 implementation completed.
+Status: Sprint 01 through Sprint 09 implementation completed. Sprint 10 planning completed.
 
 ## Product Goal
 
@@ -56,6 +56,10 @@ Sprint 07 implementation completed: Spec-driven interactive Three.js dress previ
 Sprint 08 implementation completed: durable async concept render jobs, Redis/Celery worker, validated assets, provider adapters, and desktop comparison workflow.
 
 Sprint 09 implementation completed: immutable production snapshots, readiness checks, background PDF/XLSX generation, and desktop export workflow.
+
+Sprint 10 planning completed: internal Windows alpha scope, release gates, test/CI matrix, AI evaluation, security and reliability hardening, packaging, limitations, and rollback planning.
+
+Sprint 10 implementation has not started. The planned release target is a controlled internal Windows alpha / MVP release candidate, not an external customer release.
 
 Sprint 00 deliverables:
 
@@ -238,6 +242,10 @@ Sprint 09 implementation deliverables:
 - [Tech pack export planning docs](docs/exports/README.md)
 - [Sprint 09 completion record](docs/sprints/09_sprint_completion_record.md)
 - [Sprint 09 development completion record](docs/sprints/09_sprint_development_completion_record.md)
+- [Sprint 10 release-readiness planning docs](docs/release/README.md)
+- [Sprint 10 plan](docs/sprints/10_sprint_testing_hardening_mvp_release.md)
+- [Sprint 10 progress tracker](docs/sprints/10_sprint_progress_tracker.md)
+- [Sprint 10 planning completion record](docs/sprints/10_sprint_completion_record.md)
 
 ## Implemented Code
 
@@ -257,4 +265,4 @@ Before starting a new task, follow [AGENTS.md](AGENTS.md). Read the project cont
 
 ## Not Yet Implemented
 
-This repository now contains the Electron designer workspace, local voice interaction, interactive fast 3D preview, immutable persistence, asynchronous concept rendering, and production tech-pack export. General desktop save/load, production live transcription, production authentication, and a live paid OpenAI image request are not yet implemented.
+This repository now contains the Electron designer workspace, local voice interaction, interactive fast 3D preview, immutable persistence, asynchronous concept rendering, and production tech-pack export. General desktop design discovery/reload, production live transcription, production authentication, hosted services, signed public distribution, and a live paid OpenAI image acceptance run are not yet implemented.

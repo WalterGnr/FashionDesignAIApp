@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-11
 
-Status: Sprint 00 planning and Sprint 01 through Sprint 09 implementation are complete.
+Status: Sprint 00 and Sprint 10 planning are complete. Sprint 01 through Sprint 09 implementation is complete.
 
 ## Planning Assumption
 
@@ -103,6 +103,8 @@ Current status: planning and implementation completed, including immutable expor
 Plan quality, security, testing, packaging, and MVP release criteria.
 
 File: `10_sprint_testing_hardening_mvp_release.md`
+
+Current status: planning completed. The implementation target is a controlled internal Windows alpha / MVP release candidate. External customer release remains blocked by production identity, hosted infrastructure, production voice, signing, and operational/privacy readiness.
 
 ## Why This Order
 
