@@ -7,10 +7,12 @@ import type {
   RenderStatus
 } from "../../shared/ipc-contracts.js";
 import { isActiveRenderStatus, mergeRenderJobs, renderStatusLabel } from "./render-session.js";
+import type { PersistedDesignVersion } from "./backend-design-session.js";
 
 type ConceptRenderWorkspaceProps = {
   selectedVersion: DesignVersion;
   desktopApi?: FashionDesktopApi;
+  ensurePersistedVersion: (version: DesignVersion) => Promise<PersistedDesignVersion>;
 };
 
 type RenderStyle = "editorial_studio" | "technical_studio";
@@ -27,19 +29,20 @@ function statusIcon(status: RenderStatus) {
   return <Sparkles size={15} aria-hidden="true" />;
 }
 
-export function ConceptRenderWorkspace({ selectedVersion, desktopApi }: ConceptRenderWorkspaceProps) {
+export function ConceptRenderWorkspace({
+  selectedVersion,
+  desktopApi,
+  ensurePersistedVersion
+}: ConceptRenderWorkspaceProps) {
   const [renderStyle, setRenderStyle] = useState<RenderStyle>("editorial_studio");
   const [renderView, setRenderView] = useState<RenderView>("three_quarter");
   const [quality, setQuality] = useState<RenderQuality>("medium");
   const [variationCount, setVariationCount] = useState(1);
   const [requesting, setRequesting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [backendDesignId, setBackendDesignId] = useState<string | null>(null);
-  const [backendVersionIds, setBackendVersionIds] = useState<Record<string, string>>({});
+  const [syncedVersionIds, setSyncedVersionIds] = useState<Set<string>>(() => new Set());
   const [jobsByVersion, setJobsByVersion] = useState<Record<string, RenderJob[]>>({});
   const [assetDataUrls, setAssetDataUrls] = useState<Record<string, string>>({});
-  const backendDesignIdRef = useRef<string | null>(null);
-  const backendVersionIdsRef = useRef<Record<string, string>>({});
   const loadingAssetsRef = useRef(new Set<string>());
 
   const selectedJobs = useMemo(
@@ -54,48 +57,12 @@ export function ConceptRenderWorkspace({ selectedVersion, desktopApi }: ConceptR
     }));
   }
 
-  async function ensurePersistedVersion(): Promise<{ designId: string; versionId: string }> {
-    if (!desktopApi) {
-      throw new Error("Concept rendering is available in the desktop application.");
-    }
-    const existingVersionId = backendVersionIdsRef.current[selectedVersion.version_id];
-    if (backendDesignIdRef.current && existingVersionId) {
-      return { designId: backendDesignIdRef.current, versionId: existingVersionId };
-    }
-
-    const parentBackendVersionId = selectedVersion.parent_version_id
-      ? backendVersionIdsRef.current[selectedVersion.parent_version_id]
-      : undefined;
-    const response = await desktopApi.backend.syncDesignVersion({
-      ...(backendDesignIdRef.current ? { backend_design_id: backendDesignIdRef.current } : {}),
-      design_name: "Untitled Dress Study",
-      local_version_id: selectedVersion.version_id,
-      ...(parentBackendVersionId ? { parent_backend_version_id: parentBackendVersionId } : {}),
-      source: selectedVersion.created_from,
-      change_summary: selectedVersion.change_summary,
-      spec_snapshot: selectedVersion.spec_snapshot,
-      locked_fields_snapshot: selectedVersion.locked_fields.map((field) => ({ ...field })),
-      operation_ids: selectedVersion.operation_ids
-    });
-    if (!response.ok) {
-      throw new Error(response.message);
-    }
-    backendDesignIdRef.current = response.data.design_id;
-    const nextVersionIds = {
-      ...backendVersionIdsRef.current,
-      [selectedVersion.version_id]: response.data.design_version_id
-    };
-    backendVersionIdsRef.current = nextVersionIds;
-    setBackendDesignId(response.data.design_id);
-    setBackendVersionIds(nextVersionIds);
-    return { designId: response.data.design_id, versionId: response.data.design_version_id };
-  }
-
   async function requestRenders() {
     setRequesting(true);
     setErrorMessage(null);
     try {
-      const persisted = await ensurePersistedVersion();
+      const persisted = await ensurePersistedVersion(selectedVersion);
+      setSyncedVersionIds((current) => new Set(current).add(selectedVersion.version_id));
       if (!desktopApi) {
         throw new Error("Concept rendering is available in the desktop application.");
       }
@@ -283,7 +250,7 @@ export function ConceptRenderWorkspace({ selectedVersion, desktopApi }: ConceptR
         {selectedJobs.map((job) => `Variation ${job.variation_index}: ${renderStatusLabel(job.status)}`).join(". ")}
       </span>
       <span className="concept-version-trace">
-        Version {selectedVersion.version_number} {backendDesignId && backendVersionIds[selectedVersion.version_id] ? "synced" : "local"}
+        Version {selectedVersion.version_number} {syncedVersionIds.has(selectedVersion.version_id) ? "synced" : "local"}
       </span>
     </section>
   );

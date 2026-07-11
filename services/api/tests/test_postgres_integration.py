@@ -115,3 +115,54 @@ def test_postgres_render_input_snapshot_is_immutable() -> None:
 
     engine.dispose()
     assert prompt != "Attempted input rewrite"
+
+
+def test_postgres_tech_pack_snapshot_is_immutable() -> None:
+    assert POSTGRES_TEST_DATABASE_URL is not None
+    with TestClient(app) as client:
+        design = client.post(
+            "/designs",
+            json={
+                "name": "Immutable Tech Pack Dress",
+                "initial_version": {
+                    "source": "system",
+                    "change_summary": "Created for tech-pack snapshot verification.",
+                    "spec_snapshot": {"schema_version": "1.0.0", "garment_category": "dress"},
+                },
+            },
+        ).json()
+        response = client.post(
+            "/tech-packs",
+            json={
+                "design_id": design["id"],
+                "design_version_id": design["current_version_id"],
+                "formats": ["pdf"],
+                "client_idempotency_key": "postgres-immutable-tech-pack",
+            },
+        )
+
+    assert response.status_code == 202
+    job_id = UUID(response.json()["job"]["id"])
+    design_id = UUID(design["id"])
+    engine = create_engine(POSTGRES_TEST_DATABASE_URL)
+    connection = engine.connect()
+    transaction = connection.begin()
+    try:
+        with pytest.raises(DBAPIError, match="tech_pack_inputs are immutable"):
+            connection.execute(
+                text("UPDATE tech_pack_inputs SET readiness_issues = '[]'::jsonb WHERE tech_pack_job_id = :job_id"),
+                {"job_id": job_id},
+            )
+    finally:
+        transaction.rollback()
+        connection.close()
+
+    with engine.begin() as connection:
+        issue_count = connection.scalar(
+            text("SELECT jsonb_array_length(readiness_issues) FROM tech_pack_inputs WHERE tech_pack_job_id = :job_id"),
+            {"job_id": job_id},
+        )
+        connection.execute(text("DELETE FROM designs WHERE id = :design_id"), {"design_id": design_id})
+
+    engine.dispose()
+    assert issue_count > 0

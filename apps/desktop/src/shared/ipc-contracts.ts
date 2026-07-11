@@ -172,6 +172,128 @@ export const RenderAssetDataUrlResultSchema = z
   .strict();
 export type RenderAssetDataUrlResult = z.infer<typeof RenderAssetDataUrlResultSchema>;
 
+export const TechPackFormatSchema = z.enum(["pdf", "xlsx"]);
+export type TechPackFormat = z.infer<typeof TechPackFormatSchema>;
+
+export const TechPackReadinessStatusSchema = z.enum(["ready", "ready_with_warnings", "blocked"]);
+export type TechPackReadinessStatus = z.infer<typeof TechPackReadinessStatusSchema>;
+
+export const TechPackIssueSchema = z
+  .object({
+    severity: z.enum(["blocker", "warning"]),
+    code: z.string(),
+    field_path: z.string().nullable(),
+    message: z.string()
+  })
+  .strict();
+export type TechPackIssue = z.infer<typeof TechPackIssueSchema>;
+
+export const TechPackReadinessRequestSchema = z
+  .object({ design_id: UuidSchema, design_version_id: UuidSchema })
+  .strict();
+export type TechPackReadinessRequest = z.infer<typeof TechPackReadinessRequestSchema>;
+
+export const TechPackReadinessSchema = z
+  .object({
+    design_id: UuidSchema,
+    design_version_id: UuidSchema,
+    status: TechPackReadinessStatusSchema,
+    issues: z.array(TechPackIssueSchema)
+  })
+  .strict();
+export type TechPackReadiness = z.infer<typeof TechPackReadinessSchema>;
+
+export const TechPackAssetSchema = z
+  .object({
+    id: UuidSchema,
+    tech_pack_job_id: UuidSchema,
+    format: TechPackFormatSchema,
+    content_type: z.string(),
+    byte_size: z.number().int().positive(),
+    sha256: z.string().regex(/^[a-f0-9]{64}$/),
+    download_path: z.string().startsWith("/tech-pack-assets/"),
+    created_at: z.string()
+  })
+  .strict();
+export type TechPackAsset = z.infer<typeof TechPackAssetSchema>;
+
+export const TechPackJobStatusSchema = z.enum([
+  "blocked",
+  "queued",
+  "running",
+  "retrying",
+  "cancel_requested",
+  "canceled",
+  "succeeded",
+  "succeeded_with_partial_formats",
+  "failed"
+]);
+export type TechPackJobStatus = z.infer<typeof TechPackJobStatusSchema>;
+
+export const TechPackJobSchema = z
+  .object({
+    id: UuidSchema,
+    design_id: UuidSchema,
+    design_version_id: UuidSchema,
+    status: TechPackJobStatusSchema,
+    readiness_status: TechPackReadinessStatusSchema,
+    requested_formats: z.array(TechPackFormatSchema),
+    format_statuses: z.record(z.string(), z.string()),
+    page_size: z.enum(["letter", "a4"]),
+    locale: z.string(),
+    unit_preference: z.string(),
+    draft_acknowledged: z.boolean(),
+    snapshot_hash: z.string().regex(/^[a-f0-9]{64}$/),
+    safe_error_code: z.string().nullable(),
+    safe_error_message: z.string().nullable(),
+    created_at: z.string(),
+    started_at: z.string().nullable(),
+    completed_at: z.string().nullable(),
+    updated_at: z.string(),
+    issues: z.array(TechPackIssueSchema),
+    assets: z.array(TechPackAssetSchema)
+  })
+  .strict();
+export type TechPackJob = z.infer<typeof TechPackJobSchema>;
+
+export const CreateTechPackRequestSchema = z
+  .object({
+    design_id: UuidSchema,
+    design_version_id: UuidSchema,
+    formats: z.array(TechPackFormatSchema).min(1).max(2),
+    page_size: z.enum(["letter", "a4"]),
+    locale: z.string().min(2).max(20),
+    unit_preference: z.literal("source"),
+    acknowledge_draft: z.boolean(),
+    selected_render_asset_id: UuidSchema.optional(),
+    client_idempotency_key: z.string().min(8).max(120)
+  })
+  .strict();
+export type CreateTechPackRequest = z.infer<typeof CreateTechPackRequestSchema>;
+
+export const CreateTechPackResultSchema = z
+  .object({ job: TechPackJobSchema, reused_existing: z.boolean() })
+  .strict();
+export type CreateTechPackResult = z.infer<typeof CreateTechPackResultSchema>;
+
+export const TechPackJobRequestSchema = z.object({ tech_pack_job_id: UuidSchema }).strict();
+export type TechPackJobRequest = z.infer<typeof TechPackJobRequestSchema>;
+
+export const ListTechPacksRequestSchema = z
+  .object({ design_id: UuidSchema.optional(), design_version_id: UuidSchema.optional() })
+  .strict();
+export type ListTechPacksRequest = z.infer<typeof ListTechPacksRequestSchema>;
+
+export const OpenTechPackAssetRequestSchema = z
+  .object({ asset_id: UuidSchema, format: TechPackFormatSchema })
+  .strict();
+export type OpenTechPackAssetRequest = z.infer<typeof OpenTechPackAssetRequestSchema>;
+
+export const OpenTechPackAssetResultSchema = z
+  .object({ opened: z.boolean(), local_path: z.string() })
+  .strict();
+export type OpenTechPackAssetResult = z.infer<typeof OpenTechPackAssetResultSchema>;
+
 export const DesktopSuccessResponseSchema = <T extends z.ZodType>(dataSchema: T) =>
   z
     .object({
@@ -239,5 +361,13 @@ export type FashionDesktopApi = {
     list(request: ListRendersRequest): Promise<DesktopResponse<RenderJob[]>>;
     cancel(request: RenderJobRequest): Promise<DesktopResponse<RenderJob>>;
     getAssetDataUrl(request: RenderAssetDataUrlRequest): Promise<DesktopResponse<RenderAssetDataUrlResult>>;
+  };
+  techPacks: {
+    readiness(request: TechPackReadinessRequest): Promise<DesktopResponse<TechPackReadiness>>;
+    create(request: CreateTechPackRequest): Promise<DesktopResponse<CreateTechPackResult>>;
+    get(request: TechPackJobRequest): Promise<DesktopResponse<TechPackJob>>;
+    list(request: ListTechPacksRequest): Promise<DesktopResponse<TechPackJob[]>>;
+    cancel(request: TechPackJobRequest): Promise<DesktopResponse<TechPackJob>>;
+    openAsset(request: OpenTechPackAssetRequest): Promise<DesktopResponse<OpenTechPackAssetResult>>;
   };
 };

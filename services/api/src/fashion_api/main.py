@@ -26,6 +26,11 @@ from fashion_api.schemas import (
     RenderBatchRead,
     RenderCreate,
     RenderJobRead,
+    TechPackCreate,
+    TechPackCreateRead,
+    TechPackJobRead,
+    TechPackReadinessRead,
+    TechPackReadinessRequest,
 )
 from fashion_api.services import (
     ResourceNotFoundError,
@@ -38,6 +43,15 @@ from fashion_api.services import (
     list_designs,
 )
 from fashion_api.storage import LocalRenderStorage
+from fashion_api.tech_pack_storage import LocalTechPackStorage
+from fashion_api.tech_packs import (
+    cancel_tech_pack,
+    create_tech_pack,
+    get_tech_pack,
+    get_tech_pack_asset,
+    list_tech_packs,
+    readiness_for_version,
+)
 
 settings = get_settings()
 app = FastAPI(title=settings.app_name, version=settings.app_version)
@@ -209,3 +223,87 @@ def get_render_asset_file(
     except (ResourceNotFoundError, FileNotFoundError) as error:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Render asset not found.") from error
     return FileResponse(path, media_type=asset.content_type, filename=f"fashion-render-{asset.id}.png")
+
+
+@app.post("/tech-packs/readiness", response_model=TechPackReadinessRead)
+def post_tech_pack_readiness(
+    payload: TechPackReadinessRequest,
+    session: Session = Depends(get_session),
+    owner_user_id: UUID = Depends(current_owner_id),
+) -> TechPackReadinessRead:
+    try:
+        return readiness_for_version(session, payload.design_id, payload.design_version_id, owner_user_id)
+    except (ResourceNotFoundError, VersionConflictError) as error:
+        raise not_found_or_conflict(error) from error
+
+
+@app.post("/tech-packs", response_model=TechPackCreateRead, status_code=status.HTTP_202_ACCEPTED)
+def post_tech_pack(
+    payload: TechPackCreate,
+    session: Session = Depends(get_session),
+    owner_user_id: UUID = Depends(current_owner_id),
+    config: Settings = Depends(get_settings),
+) -> TechPackCreateRead:
+    try:
+        result = create_tech_pack(session, payload, owner_user_id, config)
+    except (ResourceNotFoundError, VersionConflictError) as error:
+        raise not_found_or_conflict(error) from error
+    if config.render_dispatch_enabled and not result.reused_existing and result.job.status == "queued":
+        try:
+            from fashion_api.tasks import wake_tech_pack_dispatcher
+
+            wake_tech_pack_dispatcher()
+        except Exception:
+            logger.exception("Tech-pack dispatcher wake-up failed; the durable outbox will retry.")
+    return result
+
+
+@app.get("/tech-packs", response_model=list[TechPackJobRead])
+def get_tech_packs(
+    design_id: UUID | None = None,
+    design_version_id: UUID | None = None,
+    session: Session = Depends(get_session),
+    owner_user_id: UUID = Depends(current_owner_id),
+) -> list[TechPackJobRead]:
+    return list_tech_packs(session, owner_user_id, design_id, design_version_id)
+
+
+@app.get("/tech-packs/{tech_pack_job_id}", response_model=TechPackJobRead)
+def get_tech_pack_by_id(
+    tech_pack_job_id: UUID,
+    session: Session = Depends(get_session),
+    owner_user_id: UUID = Depends(current_owner_id),
+) -> TechPackJobRead:
+    try:
+        return get_tech_pack(session, tech_pack_job_id, owner_user_id)
+    except ResourceNotFoundError as error:
+        raise not_found_or_conflict(error) from error
+
+
+@app.post("/tech-packs/{tech_pack_job_id}/cancel", response_model=TechPackJobRead)
+def post_tech_pack_cancel(
+    tech_pack_job_id: UUID,
+    session: Session = Depends(get_session),
+    owner_user_id: UUID = Depends(current_owner_id),
+) -> TechPackJobRead:
+    try:
+        return cancel_tech_pack(session, tech_pack_job_id, owner_user_id)
+    except ResourceNotFoundError as error:
+        raise not_found_or_conflict(error) from error
+
+
+@app.get("/tech-pack-assets/{asset_id}")
+def get_tech_pack_asset_file(
+    asset_id: UUID,
+    session: Session = Depends(get_session),
+    owner_user_id: UUID = Depends(current_owner_id),
+    config: Settings = Depends(get_settings),
+) -> FileResponse:
+    try:
+        asset = get_tech_pack_asset(session, asset_id, owner_user_id)
+        storage = LocalTechPackStorage(config.tech_pack_storage_root, config.tech_pack_max_asset_bytes)
+        path = storage.path_for(asset.object_key)
+    except (ResourceNotFoundError, FileNotFoundError) as error:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tech-pack asset not found.") from error
+    filename = f"fashion-tech-pack-{asset.tech_pack_job_id}.{asset.format}"
+    return FileResponse(path, media_type=asset.content_type, filename=filename)

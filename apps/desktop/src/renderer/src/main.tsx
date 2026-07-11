@@ -18,7 +18,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { createInitialDesignVersion } from "@fashion-design-ai/domain";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { AppInfo, DesktopResponse, HealthPingResult } from "../../shared/ipc-contracts.js";
 import {
   applyDesignerTextCommand,
@@ -31,6 +31,8 @@ import { nextMockTranscript, VoiceSessionController, type VoiceSessionSnapshot }
 import { DressPreviewCanvas } from "./preview/DressPreviewCanvas.js";
 import { mapDressSpecToPreview } from "./preview/preview-mapper.js";
 import { ConceptRenderWorkspace } from "./ConceptRenderWorkspace.js";
+import { BackendDesignSession } from "./backend-design-session.js";
+import { TechPackExportDialog } from "./TechPackExportDialog.js";
 import "./styles.css";
 
 type ShellStatus = "checking" | "ready" | "error";
@@ -80,6 +82,7 @@ function App() {
   const initialVersion = useMemo(() => createInitialDesignVersion(), []);
   const commandInputRef = useRef<HTMLInputElement | null>(null);
   const voiceControllerRef = useRef(new VoiceSessionController());
+  const backendDesignSessionRef = useRef(new BackendDesignSession());
   const [appInfo, setAppInfo] = useState<DesktopResponse<AppInfo> | null>(null);
   const [health, setHealth] = useState<DesktopResponse<HealthPingResult> | null>(null);
   const [shellStatus, setShellStatus] = useState<ShellStatus>("checking");
@@ -92,6 +95,13 @@ function App() {
   const [voiceSnapshot, setVoiceSnapshot] = useState<VoiceSessionSnapshot>(() => voiceControllerRef.current.snapshot());
   const [mockTranscriptIndex, setMockTranscriptIndex] = useState(0);
   const [previewMode, setPreviewMode] = useState<PreviewMode>("three_d");
+  const [exportDialogOpen, setExportDialogOpen] = useState(false);
+
+  const ensurePersistedVersion = useCallback(
+    (version: typeof initialVersion) =>
+      backendDesignSessionRef.current.ensurePersistedVersion(version, window.fashionDesktop),
+    []
+  );
 
   const selectedVersion = versionHistory.find((version) => version.version_id === selectedVersionId) ?? currentVersion;
   const selectedSpec = selectedVersion.spec_snapshot;
@@ -279,7 +289,7 @@ function App() {
             <RefreshCw size={16} aria-hidden="true" />
             <span className="sr-only">Refresh shell health</span>
           </button>
-          <button type="button" className="icon-button" title="Tech pack export is planned for a later sprint" disabled>
+          <button type="button" className="icon-button" title="Export production tech pack" onClick={() => setExportDialogOpen(true)}>
             <Download size={16} aria-hidden="true" />
             <span className="sr-only">Export tech pack</span>
           </button>
@@ -324,7 +334,11 @@ function App() {
             {previewMode === "three_d" ? (
               <DressPreviewCanvas parameters={previewParameters} versionId={selectedVersion.version_id} />
             ) : (
-              <ConceptRenderWorkspace selectedVersion={selectedVersion} desktopApi={window.fashionDesktop} />
+              <ConceptRenderWorkspace
+                selectedVersion={selectedVersion}
+                desktopApi={window.fashionDesktop}
+                ensurePersistedVersion={ensurePersistedVersion}
+              />
             )}
 
             <div className="preview-spec-strip" aria-label="Visible spec summary">
@@ -534,6 +548,14 @@ function App() {
           </section>
         </aside>
       </section>
+      {exportDialogOpen ? (
+        <TechPackExportDialog
+          selectedVersion={selectedVersion}
+          desktopApi={window.fashionDesktop}
+          ensurePersistedVersion={ensurePersistedVersion}
+          onClose={() => setExportDialogOpen(false)}
+        />
+      ) : null}
     </main>
   );
 }

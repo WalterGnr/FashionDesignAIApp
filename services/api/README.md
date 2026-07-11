@@ -1,6 +1,6 @@
 # Fashion Design AI API
 
-FastAPI service for durable designs, immutable dress versions, and asynchronous concept renders.
+FastAPI service for durable designs, immutable dress versions, asynchronous concept renders, and production tech packs.
 
 ## Local Setup On Windows
 
@@ -50,5 +50,11 @@ The default tests use an isolated in-memory database for speed. PostgreSQL remai
 - `GET /renders/{render_job_id}`
 - `POST /renders/{render_job_id}/cancel`
 - `GET /render-assets/{asset_id}`
+- `POST /tech-packs/readiness`
+- `POST /tech-packs`
+- `GET /tech-packs`
+- `GET /tech-packs/{tech_pack_job_id}`
+- `POST /tech-packs/{tech_pack_job_id}/cancel`
+- `GET /tech-pack-assets/{asset_id}`
 
-No endpoint updates a design version or render input. PostgreSQL enforces both immutable snapshots with triggers.
+No endpoint updates a design version, render input, or tech-pack input. PostgreSQL enforces all three immutable snapshots with triggers.

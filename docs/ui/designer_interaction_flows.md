@@ -84,15 +84,18 @@ Rule:
 4. Current version remains clearly marked.
 5. Future revert action creates a new version.
 
-## Flow 7: Export Placeholder
+## Flow 7: Export Tech Pack
 
-Export is visible but unavailable until export sprint implementation.
+Sprint 09 implementation replaced the original placeholder with a version-scoped export workflow.
 
-UI should communicate:
+Current workflow:
 
-- export requires saved version
-- tech pack export is planned
-- disabled action should not look broken
+- persist the exact selected version through the shared backend design session
+- check production readiness before generation
+- show blockers and warnings without hiding missing data
+- require explicit acknowledgement before generating an incomplete draft
+- generate PDF and XLSX independently through the background worker
+- show per-format completion and open completed files through Electron IPC
 
 ## Flow 8: Backend Unavailable Later
 

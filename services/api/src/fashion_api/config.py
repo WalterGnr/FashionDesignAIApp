@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     render_provider: Literal["mock", "openai"] = "mock"
     render_storage_root: Path = Path(".data/render-assets")
     render_max_asset_bytes: int = 25 * 1024 * 1024
+    tech_pack_storage_root: Path = Path(".data/tech-pack-assets")
+    tech_pack_max_asset_bytes: int = 50 * 1024 * 1024
     openai_api_key: SecretStr | None = None
     openai_image_model: str = "gpt-image-2"
 

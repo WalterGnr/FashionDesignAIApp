@@ -1,12 +1,18 @@
 import { app, BrowserWindow, ipcMain, shell } from "electron";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { mkdir, writeFile } from "node:fs/promises";
 import {
+  CreateTechPackRequestSchema,
+  CreateTechPackResultSchema,
   CreateRendersRequestSchema,
   CreateRendersResultSchema,
   HealthPingRequestSchema,
   IPC_CHANNELS,
   ListRendersRequestSchema,
+  ListTechPacksRequestSchema,
+  OpenTechPackAssetRequestSchema,
+  OpenTechPackAssetResultSchema,
   OpenExternalRequestSchema,
   RenderAssetDataUrlRequestSchema,
   RenderAssetDataUrlResultSchema,
@@ -14,6 +20,10 @@ import {
   RenderJobSchema,
   SyncDesignVersionRequestSchema,
   SyncDesignVersionResultSchema,
+  TechPackJobRequestSchema,
+  TechPackJobSchema,
+  TechPackReadinessRequestSchema,
+  TechPackReadinessSchema,
   errorResponse,
   isAllowedExternalUrl,
   successResponse,
@@ -21,9 +31,12 @@ import {
   type DesktopResponse,
   type HealthPingResult,
   type OpenExternalResult,
+  type OpenTechPackAssetResult,
   type RenderAssetDataUrlResult,
   type RenderJob,
-  type SyncDesignVersionResult
+  type SyncDesignVersionResult,
+  type TechPackJob,
+  type TechPackReadiness
 } from "../shared/ipc-contracts.js";
 import { z } from "zod";
 
@@ -31,6 +44,7 @@ const currentFile = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFile);
 const apiBaseUrl = process.env.FASHION_API_URL ?? "http://127.0.0.1:8000";
 const MAX_RENDER_ASSET_BYTES = 25 * 1024 * 1024;
+const MAX_TECH_PACK_ASSET_BYTES = 50 * 1024 * 1024;
 
 class BackendRequestError extends Error {
   constructor(
@@ -274,6 +288,131 @@ function registerIpcHandlers(): void {
             byte_size: bytes.length
           })
         );
+      } catch (error) {
+        return backendError(error);
+      }
+    }
+  );
+
+  ipcMain.handle(
+    IPC_CHANNELS.techPacksReadiness,
+    async (_event, payload: unknown): Promise<DesktopResponse<TechPackReadiness>> => {
+      const parsed = TechPackReadinessRequestSchema.safeParse(payload);
+      if (!parsed.success) {
+        return errorResponse("schema_violation", "Invalid tech-pack readiness request.");
+      }
+      try {
+        return successResponse(
+          TechPackReadinessSchema.parse(
+            await backendJson("/tech-packs/readiness", {
+              method: "POST",
+              body: JSON.stringify(parsed.data)
+            })
+          )
+        );
+      } catch (error) {
+        return backendError(error);
+      }
+    }
+  );
+
+  ipcMain.handle(IPC_CHANNELS.techPacksCreate, async (_event, payload: unknown) => {
+    const parsed = CreateTechPackRequestSchema.safeParse(payload);
+    if (!parsed.success) {
+      return errorResponse("schema_violation", "Invalid tech-pack creation request.");
+    }
+    try {
+      return successResponse(
+        CreateTechPackResultSchema.parse(
+          await backendJson("/tech-packs", { method: "POST", body: JSON.stringify(parsed.data) })
+        )
+      );
+    } catch (error) {
+      return backendError(error);
+    }
+  });
+
+  ipcMain.handle(IPC_CHANNELS.techPacksGet, async (_event, payload: unknown): Promise<DesktopResponse<TechPackJob>> => {
+    const parsed = TechPackJobRequestSchema.safeParse(payload);
+    if (!parsed.success) {
+      return errorResponse("schema_violation", "Invalid tech-pack lookup request.");
+    }
+    try {
+      return successResponse(
+        TechPackJobSchema.parse(await backendJson(`/tech-packs/${parsed.data.tech_pack_job_id}`))
+      );
+    } catch (error) {
+      return backendError(error);
+    }
+  });
+
+  ipcMain.handle(IPC_CHANNELS.techPacksList, async (_event, payload: unknown): Promise<DesktopResponse<TechPackJob[]>> => {
+    const parsed = ListTechPacksRequestSchema.safeParse(payload);
+    if (!parsed.success) {
+      return errorResponse("schema_violation", "Invalid tech-pack list request.");
+    }
+    const query = new URLSearchParams();
+    if (parsed.data.design_id) query.set("design_id", parsed.data.design_id);
+    if (parsed.data.design_version_id) query.set("design_version_id", parsed.data.design_version_id);
+    try {
+      return successResponse(
+        z.array(TechPackJobSchema).parse(await backendJson(`/tech-packs${query.size ? `?${query}` : ""}`))
+      );
+    } catch (error) {
+      return backendError(error);
+    }
+  });
+
+  ipcMain.handle(IPC_CHANNELS.techPacksCancel, async (_event, payload: unknown): Promise<DesktopResponse<TechPackJob>> => {
+    const parsed = TechPackJobRequestSchema.safeParse(payload);
+    if (!parsed.success) {
+      return errorResponse("schema_violation", "Invalid tech-pack cancellation request.");
+    }
+    try {
+      return successResponse(
+        TechPackJobSchema.parse(
+          await backendJson(`/tech-packs/${parsed.data.tech_pack_job_id}/cancel`, { method: "POST" })
+        )
+      );
+    } catch (error) {
+      return backendError(error);
+    }
+  });
+
+  ipcMain.handle(
+    IPC_CHANNELS.techPackAssetOpen,
+    async (_event, payload: unknown): Promise<DesktopResponse<OpenTechPackAssetResult>> => {
+      const parsed = OpenTechPackAssetRequestSchema.safeParse(payload);
+      if (!parsed.success) {
+        return errorResponse("schema_violation", "Invalid tech-pack asset request.");
+      }
+      try {
+        const response = await fetch(`${apiBaseUrl}/tech-pack-assets/${parsed.data.asset_id}`, {
+          signal: AbortSignal.timeout(30_000)
+        });
+        const expectedContentType =
+          parsed.data.format === "pdf"
+            ? "application/pdf"
+            : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        if (!response.ok || !response.headers.get("content-type")?.startsWith(expectedContentType)) {
+          throw new BackendRequestError("tech_pack_asset_unavailable", "The tech-pack file is unavailable.");
+        }
+        const bytes = Buffer.from(await response.arrayBuffer());
+        if (bytes.length === 0 || bytes.length > MAX_TECH_PACK_ASSET_BYTES) {
+          throw new BackendRequestError("tech_pack_asset_invalid", "The tech-pack file has an invalid size.");
+        }
+        const exportDirectory = join(app.getPath("temp"), "fashion-design-ai", "exports");
+        await mkdir(exportDirectory, { recursive: true });
+        const localPath = join(
+          exportDirectory,
+          `fashion-tech-pack-${parsed.data.asset_id}.${parsed.data.format}`
+        );
+        await writeFile(localPath, bytes);
+        const openError = await shell.openPath(localPath);
+        if (openError) {
+          throw new BackendRequestError("tech_pack_open_failed", "Windows could not open the generated file.");
+        }
+        return successResponse(OpenTechPackAssetResultSchema.parse({ opened: true, local_path: localPath }));
       } catch (error) {
         return backendError(error);
       }

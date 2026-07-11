@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
   AppInfoSchema,
+  CreateTechPackRequestSchema,
   CreateRendersRequestSchema,
   HealthPingRequestSchema,
   OpenExternalRequestSchema,
   RenderJobSchema,
   SyncDesignVersionRequestSchema,
+  TechPackJobSchema,
   errorResponse,
   isAllowedExternalUrl,
   successResponse
@@ -118,5 +120,44 @@ describe("desktop IPC contracts", () => {
     });
 
     expect(parsed.success).toBe(true);
+  });
+
+  it("validates safe tech-pack requests and traceable export jobs", () => {
+    const request = CreateTechPackRequestSchema.safeParse({
+      design_id: "2cf99895-c76a-41ad-85cb-3954c8e600a7",
+      design_version_id: "02962452-9f80-41a2-9d39-a832f36ee71d",
+      formats: ["pdf", "xlsx"],
+      page_size: "letter",
+      locale: "en-US",
+      unit_preference: "source",
+      acknowledge_draft: false,
+      client_idempotency_key: "version-2-tech-pack"
+    });
+    const job = TechPackJobSchema.safeParse({
+      id: "43b041e2-7ae3-4e17-9701-6798b5a946f0",
+      design_id: "2cf99895-c76a-41ad-85cb-3954c8e600a7",
+      design_version_id: "02962452-9f80-41a2-9d39-a832f36ee71d",
+      status: "succeeded",
+      readiness_status: "ready_with_warnings",
+      requested_formats: ["pdf", "xlsx"],
+      format_statuses: { pdf: "succeeded", xlsx: "succeeded" },
+      page_size: "letter",
+      locale: "en-US",
+      unit_preference: "source",
+      draft_acknowledged: false,
+      snapshot_hash: "b".repeat(64),
+      safe_error_code: null,
+      safe_error_message: null,
+      created_at: "2026-07-10T12:00:00Z",
+      started_at: "2026-07-10T12:00:01Z",
+      completed_at: "2026-07-10T12:00:02Z",
+      updated_at: "2026-07-10T12:00:02Z",
+      issues: [],
+      assets: []
+    });
+
+    expect(request.success).toBe(true);
+    expect(job.success).toBe(true);
+    expect(CreateTechPackRequestSchema.safeParse({ ...request.data, formats: [] }).success).toBe(false);
   });
 });

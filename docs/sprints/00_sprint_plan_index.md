@@ -1,8 +1,8 @@
 # Sprint Plan Index
 
-Last updated: 2026-07-09
+Last updated: 2026-07-11
 
-Status: Sprint 00 planning, Sprint 01 through Sprint 08 implementation, and Sprint 09 planning are complete. Plan Sprint 10 before implementing Sprint 09.
+Status: Sprint 00 planning and Sprint 01 through Sprint 09 implementation are complete.
 
 ## Planning Assumption
 
@@ -96,7 +96,7 @@ Plan PDF/spreadsheet tech pack exports for manufacturer-facing documentation.
 
 File: `09_sprint_tech_pack_export.md`
 
-Current status: tech-pack export planning completed. Implementation follows Sprint 08.
+Current status: planning and implementation completed, including immutable export snapshots, readiness checks, PDF/XLSX generation, worker processing, and desktop export controls.
 
 ### Sprint 10: Testing, Hardening, and MVP Release Planning
 

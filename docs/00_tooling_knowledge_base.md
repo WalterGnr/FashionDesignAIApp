@@ -470,6 +470,23 @@ Possible tools:
 - Python openpyxl
 - xlsxwriter
 
+Sprint 09 implementation decision:
+
+- Use XlsxWriter for new production workbooks.
+- Disable automatic string-to-formula and string-to-URL conversion.
+- Write measurements as typed numeric cells with separate unit columns.
+- Keep unknown production values blank or explicitly labeled, never zero-filled.
+- Render and inspect every worksheet before accepting layout changes.
+
+### ReportLab
+
+Sprint 09 implementation decision:
+
+- Use Platypus document templates, paragraphs, and repeatable tables for PDF tech packs.
+- Generate PDF and XLSX from the same immutable canonical snapshot.
+- Use repeated headers, page numbers, and keep-with-next section headings.
+- Render every PDF page to an image and inspect pagination before completion.
+
 ## Senior Development Priorities
 
 1. Define the garment spec schema before building pretty rendering.

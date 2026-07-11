@@ -15,8 +15,10 @@ dependencies = [
   "pillow>=12.3,<13",
   "psycopg[binary]>=3.2,<4",
   "pydantic-settings>=2.10,<3",
+  "reportlab>=5.0,<6",
   "sqlalchemy>=2.0,<3",
   "uvicorn[standard]>=0.35,<1",
+  "xlsxwriter>=3.2,<4",
 ]
 
 [project.optional-dependencies]
@@ -24,6 +26,7 @@ dev = [
   "httpx>=0.28,<1",
   "pytest>=8.4,<9",
   "pytest-cov>=6.2,<7",
+  "pypdf>=6.0,<7",
   "ruff>=0.12,<1",
 ]
 

@@ -132,3 +132,73 @@ class RenderJobRead(BaseModel):
 class RenderBatchRead(BaseModel):
     jobs: list[RenderJobRead]
     reused_existing: bool
+
+
+class TechPackReadinessRequest(BaseModel):
+    design_id: UUID
+    design_version_id: UUID
+
+
+class TechPackIssueRead(BaseModel):
+    severity: Literal["blocker", "warning"]
+    code: str
+    field_path: str | None = None
+    message: str
+
+
+class TechPackReadinessRead(BaseModel):
+    design_id: UUID
+    design_version_id: UUID
+    status: Literal["ready", "ready_with_warnings", "blocked"]
+    issues: list[TechPackIssueRead]
+
+
+class TechPackCreate(BaseModel):
+    design_id: UUID
+    design_version_id: UUID
+    formats: list[Literal["pdf", "xlsx"]] = Field(default_factory=lambda: ["pdf", "xlsx"], min_length=1)
+    page_size: Literal["letter", "a4"] = "letter"
+    locale: str = Field(default="en-US", min_length=2, max_length=20)
+    unit_preference: Literal["source"] = "source"
+    acknowledge_draft: bool = False
+    selected_render_asset_id: UUID | None = None
+    client_idempotency_key: str | None = Field(default=None, min_length=8, max_length=120)
+
+
+class TechPackAssetRead(BaseModel):
+    id: UUID
+    tech_pack_job_id: UUID
+    format: Literal["pdf", "xlsx"]
+    content_type: str
+    byte_size: int
+    sha256: str
+    download_path: str
+    created_at: datetime
+
+
+class TechPackJobRead(BaseModel):
+    id: UUID
+    design_id: UUID
+    design_version_id: UUID
+    status: str
+    readiness_status: Literal["ready", "ready_with_warnings", "blocked"]
+    requested_formats: list[Literal["pdf", "xlsx"]]
+    format_statuses: dict[str, str]
+    page_size: Literal["letter", "a4"]
+    locale: str
+    unit_preference: str
+    draft_acknowledged: bool
+    snapshot_hash: str
+    safe_error_code: str | None
+    safe_error_message: str | None
+    created_at: datetime
+    started_at: datetime | None
+    completed_at: datetime | None
+    updated_at: datetime
+    issues: list[TechPackIssueRead]
+    assets: list[TechPackAssetRead]
+
+
+class TechPackCreateRead(BaseModel):
+    job: TechPackJobRead
+    reused_existing: bool

@@ -1,14 +1,19 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { IPC_CHANNELS } from "../shared/ipc-channels.js";
 import type {
+  CreateTechPackRequest,
   CreateRendersRequest,
   FashionDesktopApi,
   HealthPingRequest,
   ListRendersRequest,
+  ListTechPacksRequest,
+  OpenTechPackAssetRequest,
   OpenExternalRequest,
   RenderAssetDataUrlRequest,
   RenderJobRequest,
-  SyncDesignVersionRequest
+  SyncDesignVersionRequest,
+  TechPackJobRequest,
+  TechPackReadinessRequest
 } from "../shared/ipc-contracts.js";
 
 const fashionDesktop: FashionDesktopApi = {
@@ -32,6 +37,16 @@ const fashionDesktop: FashionDesktopApi = {
     cancel: (request: RenderJobRequest) => ipcRenderer.invoke(IPC_CHANNELS.rendersCancel, request),
     getAssetDataUrl: (request: RenderAssetDataUrlRequest) =>
       ipcRenderer.invoke(IPC_CHANNELS.renderAssetGetDataUrl, request)
+  },
+  techPacks: {
+    readiness: (request: TechPackReadinessRequest) =>
+      ipcRenderer.invoke(IPC_CHANNELS.techPacksReadiness, request),
+    create: (request: CreateTechPackRequest) => ipcRenderer.invoke(IPC_CHANNELS.techPacksCreate, request),
+    get: (request: TechPackJobRequest) => ipcRenderer.invoke(IPC_CHANNELS.techPacksGet, request),
+    list: (request: ListTechPacksRequest) => ipcRenderer.invoke(IPC_CHANNELS.techPacksList, request),
+    cancel: (request: TechPackJobRequest) => ipcRenderer.invoke(IPC_CHANNELS.techPacksCancel, request),
+    openAsset: (request: OpenTechPackAssetRequest) =>
+      ipcRenderer.invoke(IPC_CHANNELS.techPackAssetOpen, request)
   }
 };
 

@@ -167,6 +167,86 @@ class RenderAsset(Base):
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
+class TechPackJob(Base):
+    __tablename__ = "tech_pack_jobs"
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('blocked', 'queued', 'running', 'retrying', 'cancel_requested', 'canceled', "
+            "'succeeded', 'succeeded_with_partial_formats', 'failed')",
+            name="ck_tech_pack_jobs_status",
+        ),
+        CheckConstraint(
+            "readiness_status IN ('ready', 'ready_with_warnings', 'blocked')",
+            name="ck_tech_pack_jobs_readiness",
+        ),
+        CheckConstraint("page_size IN ('letter', 'a4')", name="ck_tech_pack_jobs_page_size"),
+        CheckConstraint("attempt_count >= 0", name="ck_tech_pack_jobs_attempt_count"),
+        CheckConstraint("max_attempts > 0", name="ck_tech_pack_jobs_max_attempts"),
+        Index("ix_tech_pack_jobs_owner_created", "owner_user_id", "created_at"),
+        Index("ix_tech_pack_jobs_design_version", "design_version_id", "created_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    owner_user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id", ondelete="RESTRICT"))
+    design_id: Mapped[UUID] = mapped_column(ForeignKey("designs.id", ondelete="CASCADE"))
+    design_version_id: Mapped[UUID] = mapped_column(ForeignKey("design_versions.id", ondelete="RESTRICT"))
+    status: Mapped[str] = mapped_column(String(40), default="queued")
+    readiness_status: Mapped[str] = mapped_column(String(40))
+    requested_formats: Mapped[list[str]] = mapped_column(JSON_VALUE)
+    format_statuses: Mapped[dict[str, str]] = mapped_column(JSON_VALUE)
+    page_size: Mapped[str] = mapped_column(String(20), default="letter")
+    locale: Mapped[str] = mapped_column(String(20), default="en-US")
+    unit_preference: Mapped[str] = mapped_column(String(20), default="source")
+    draft_acknowledged: Mapped[bool] = mapped_column(default=False)
+    snapshot_hash: Mapped[str] = mapped_column(String(64), index=True)
+    snapshot_contract_version: Mapped[str] = mapped_column(String(40))
+    template_version: Mapped[str] = mapped_column(String(40))
+    idempotency_key: Mapped[str] = mapped_column(String(64), unique=True)
+    selected_render_asset_id: Mapped[UUID | None] = mapped_column(ForeignKey("render_assets.id", ondelete="SET NULL"))
+    attempt_count: Mapped[int] = mapped_column(Integer, default=0)
+    max_attempts: Mapped[int] = mapped_column(Integer, default=3)
+    safe_error_code: Mapped[str | None] = mapped_column(String(80))
+    safe_error_message: Mapped[str | None] = mapped_column(String(500))
+    lease_owner: Mapped[str | None] = mapped_column(String(120))
+    lease_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
+class TechPackInput(Base):
+    __tablename__ = "tech_pack_inputs"
+
+    tech_pack_job_id: Mapped[UUID] = mapped_column(
+        ForeignKey("tech_pack_jobs.id", ondelete="CASCADE"), primary_key=True
+    )
+    snapshot: Mapped[dict[str, Any]] = mapped_column(JSON_VALUE)
+    readiness_issues: Mapped[list[dict[str, Any]]] = mapped_column(JSON_VALUE)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class TechPackAsset(Base):
+    __tablename__ = "tech_pack_assets"
+    __table_args__ = (
+        CheckConstraint("format IN ('pdf', 'xlsx')", name="ck_tech_pack_assets_format"),
+        CheckConstraint("byte_size > 0", name="ck_tech_pack_assets_byte_size"),
+        UniqueConstraint("tech_pack_job_id", "format", name="uq_tech_pack_assets_job_format"),
+    )
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    tech_pack_job_id: Mapped[UUID] = mapped_column(ForeignKey("tech_pack_jobs.id", ondelete="CASCADE"))
+    format: Mapped[str] = mapped_column(String(20))
+    storage_provider: Mapped[str] = mapped_column(String(40), default="local")
+    object_key: Mapped[str] = mapped_column(String(500), unique=True)
+    content_type: Mapped[str] = mapped_column(String(120))
+    byte_size: Mapped[int] = mapped_column(BigInteger)
+    sha256: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
 class OutboxEvent(Base):
     __tablename__ = "outbox_events"
     __table_args__ = (Index("ix_outbox_events_pending", "delivered_at", "created_at"),)
